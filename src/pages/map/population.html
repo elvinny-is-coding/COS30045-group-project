@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script src="../../js/script.js" defer></script>
+  <script src="../../js/data-table.js" defer></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+ <!-- Navbar -->
+ <nav id="navbar" class="bg-blue-600 text-white p-4 flex items-center justify-between md:justify-between md:p-4">
+    <div class="flex items-center">
+      <span class="text-lg font-bold">Dashboard</span>
+    </div>
+    <button id="burger" class="text-white focus:outline-none md:hidden">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+    </button>
+    <div id="nav-items-navbar" class="hidden md:flex md:space-x-4">
+      <!-- Navigation items will be dynamically loaded here -->
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="fixed inset-0 z-30 bg-blue-600 text-white w-64 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
+    <button id="close-sidebar" class="text-white absolute top-4 right-4 focus:outline-none hidden">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    <div id="nav-items-sidebar" class="space-y-4 hidden">
+      <!-- Navigation items will be dynamically loaded here -->
+       
+     </div>
+  </div>
+
+  <!-- Content Wrapper -->
+  <div class="flex flex-col md:flex-row p-4">
+    
+    <!-- Sidebar (Filters) -->
+    <div id="filter-sidebar" class="w-full md:w-1/4 bg-white p-4 rounded shadow md:mr-4">
+      <h2 class="text-lg font-semibold mb-2">Filters</h2>
+      <!-- Filters will be dynamically loaded here -->
+      <!-- Example filter structure -->
+      <div class="mb-4">
+        <label for="filter1" class="block text-sm font-medium text-gray-700">Filter 1</label>
+        <select id="filter1" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+          <option value="">Select an option</option>
+          <!-- Options will be dynamically populated -->
+        </select>
+      </div>
+      <h2 class="text-lg font-semibold mb-2">Visual</h2>
+      <div class="mb-4">
+        <label for="filter1" class="block text-sm font-medium text-gray-700">Choose your transition</label>
+        <div class="button-container flex flex-col items-center space-y-4 mt-4">
+          <!-- Transition Effect Buttons -->
+          <button id="highToLow-button" class="w-full h-12 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition ease-in-out duration-200">
+              High to Low Population
+          </button>
+          <button id="lowToHigh-button" class="w-full h-12 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 transition ease-in-out duration-200">
+              Low to High Population
+          </button>
+          <button id="stateByState-button" class="w-full h-12 bg-purple-500 text-white font-semibold rounded-lg shadow-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-75 transition ease-in-out duration-200">
+              State by State
+          </button>
+      </div>
+
+      <style>
+        
+      </style>
+      </div>
+      <!-- Additional filters can be added here -->
+    </div>
+    
+
+    <!-- Main Content -->
+<div id="main-content" class="flex-1 bg-white p-4 rounded shadow">
+  <script type="module" src="../../js/population.js"></script> <!-- Ensure you're loading the JS file -->
+  <!-- Title and Button Section -->
+  <div id="visualization-buttons" class="mb-4 flex space-x-4">
+    <button id="population-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+        Population Map
+    </button>
+    <button id="obesity-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+        Obesity Map
+    </button>
+    <button id="diabetes-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+        Diabetes Map
+    </button>
+</div>
+<div id="visualization-title" class="mb-2 text-lg font-semibold text-gray-700">
+      <!-- Title will be set dynamically -->
+      Population of United States of America
+  </div>
+  
+
+<script>
+    // Event listeners for buttons
+    document.getElementById("population-btn").addEventListener("click", () => {
+        window.location.href = "../map/population.html";
+    });
+
+    document.getElementById("obesity-btn").addEventListener("click", () => {
+        window.location.href = "../map/obesity.html";
+    });
+
+    document.getElementById("diabetes-btn").addEventListener("click", () => {
+        window.location.href = "../map/diabetes.html";
+    });
+</script>
+  
+  
+  <!-- Placeholder for dynamically loaded visualization -->
+  <div id="visualization" class="w-full h-screen bg-gray-100 border rounded flex items-center justify-center">
+      <span class="text-gray-500" id="visualize"></span>
+  </div>
+  <div id="state-info" class="p-4 border mb-4"></div>
+
+  <div id="legend"></div>
+  
+  
+  <!-- Tooltip for hover information -->
+  <div id="tooltip" class="absolute bg-white text-black px-2 py-1 rounded shadow-lg" style="display:none; position: absolute;"></div>
+  
+  <!-- Data Table -->
+  <!-- Data Table -->
+  <table id="data-table" class="w-full bg-white border rounded overflow-auto">
+    <thead>
+      
+    </thead>
+    <tbody></tbody>
+</table>
+<div id="pagination-controls" class="flex items-center justify-between mt-4">
+  <button id="prev-button" class="pagination-button bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 disabled:opacity-50" disabled>Previous</button>
+  <span id="page-info" class="font-medium text-gray-700"></span>
+  <button id="next-button" class="pagination-button bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Next</button>
+</div>
+  
+  <!-- Visualization Info -->
+<div id="visualization-info" class="mt-4 p-4 bg-gray-100 rounded-lg shadow-md text-gray-700">
+  <h2 class="text-xl font-semibold mb-2">Population Map Overview</h2>
+  <p class="mb-2">
+    This interactive population map is a key reference for understanding the geographical distribution of the population across the USA. It provides detailed insights into population densities, allowing users to visualize and analyze demographic patterns.
+  </p>
+  <p class="mb-2">
+    This map serves as a foundational tool in our project, which explores the relationship between nutrition, obesity, and diabetes mortality. By examining the population data, users can identify regions with higher or lower population concentrations, which can be critical when correlating obesity prevalence and diabetes mortality rates.
+  </p>
+  <p>
+    This population map, combined with other interactive charts and maps in the project, enables a comprehensive analysis of public health impacts, offering a clear view of how demographic factors intersect with health outcomes over time.
+  </p>
+</div>
+   
+</div>
+
+  <script>
+
+    
+    // Toggle the sidebar visibility on small screens
+    const burgerButton = document.getElementById('burger');
+    const sidebar = document.getElementById('sidebar');
+    const closeSidebarButton = document.getElementById('close-sidebar');
+    const navItemsSidebar = document.getElementById('nav-items-sidebar');
+
+    burgerButton.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+      closeSidebarButton.classList.toggle('hidden');
+      navItemsSidebar.classList.toggle('hidden'); // Toggle sidebar nav items
+    });
+
+    closeSidebarButton.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      closeSidebarButton.classList.add('hidden');
+      navItemsSidebar.classList.add('hidden'); // Hide sidebar nav items
+    });
+
+    
+  </script>
+
+  <script>
+    
+  </script>
+
+</body>
+</html>
+

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Data Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+<!-- Navbar -->
+<nav id="navbar" class="bg-blue-600 text-white p-4 flex items-center justify-between md:justify-between md:p-4">
+    <div class="flex items-center">
+      <span class="text-lg font-bold">Dashboard</span>
+    </div>
+    <button id="burger" class="text-white focus:outline-none md:hidden">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+    </button>
+    <div id="nav-items-navbar" class="hidden md:flex md:space-x-4">
+      <!-- Navigation items will be dynamically loaded here -->
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="fixed inset-0 z-30 bg-blue-600 text-white w-64 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
+    <button id="close-sidebar" class="text-white absolute top-4 right-4 focus:outline-none hidden">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    <div id="nav-items-sidebar" class="space-y-4 hidden">
+      <!-- Navigation items will be dynamically loaded here -->
+       
+     </div>
+  </div>
+  
+<!-- Header Section -->
+<header class="bg-blue-600 text-white p-6 shadow-lg">
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold">Impact of Nutrition, Obesity, and Diabetes Mortality in the USA</h1>
+        <p class="mt-2 text-lg">Explore the visualized data on how nutrition, obesity, and diabetes affect health outcomes across the United States.</p>
+    </div>
+</header>
+
+<!-- Main Content Section -->
+<main class="container mx-auto p-6">
+    <!-- Overview Section -->
+    <section class="mb-10">
+        <h2 class="text-2xl font-semibold mb-4">Overview</h2>
+        <p class="text-gray-700">This project offers insights into the relationship between nutrition, obesity, and diabetes mortality in the USA. Through a series of interactive maps and charts, you can explore data on population distributions, obesity prevalence, and diabetes mortality rates to understand the impact of these factors on public health.
+
+            Each section includes visualizations based on data analysis, providing a deeper look at geographical patterns and trends over time.</p>
+    </section>
+
+    
+
+    <!-- Visualization Links Section -->
+    <section>
+        <h2 class="text-2xl font-semibold mb-6">Explore the Data</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Population Visualization Link -->
+            <a href="pages/map/population.html" class="block p-6 bg-white rounded-lg shadow hover:bg-blue-50 transition">
+                <h3 class="text-xl font-semibold text-blue-600">Population Map</h3>
+                <p class="text-gray-600 mt-2">Explore population data by region and see demographic patterns.</p>
+            </a>
+
+            <!-- Obesity Visualization Link -->
+            <a href="pages/map/obesity.html" class="block p-6 bg-white rounded-lg shadow hover:bg-blue-50 transition">
+                <h3 class="text-xl font-semibold text-blue-600">Obesity Map</h3>
+                <p class="text-gray-600 mt-2">Visualize obesity statistics across various regions over time.</p>
+            </a>
+
+            <!-- Diabetes Visualization Link -->
+            <a href="pages/map/diabetes.html" class="block p-6 bg-white rounded-lg shadow hover:bg-blue-50 transition">
+                <h3 class="text-xl font-semibold text-blue-600">Diabetes Map</h3>
+                <p class="text-gray-600 mt-2">Analyze diabetes prevalence and trends within populations.</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Mini Data Visualization Section -->
+    <section class="mt-12">
+        <h2 class="text-2xl font-semibold mb-4">At a Glance</h2>
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Placeholder for small charts or previews (if applicable) -->
+            <div class="flex-1 bg-white p-6 rounded shadow text-center">
+                <h3 class="text-lg font-semibold text-blue-600">Population Growth Snapshot</h3>
+                <p class="text-gray-700 mt-2">A quick look at recent population growth trends.</p>
+                <div id="mini-chart-population" class="h-32"></div>
+            </div>
+            <div class="flex-1 bg-white p-6 rounded shadow text-center">
+                <h3 class="text-lg font-semibold text-blue-600">Obesity Rate Snapshot</h3>
+                <p class="text-gray-700 mt-2">Current obesity rates by demographic segments.</p>
+                <div id="mini-chart-obesity" class="h-32"></div>
+            </div>
+            <div class="flex-1 bg-white p-6 rounded shadow text-center">
+                <h3 class="text-lg font-semibold text-blue-600">Diabetes Rate Snapshot</h3>
+                <p class="text-gray-700 mt-2">Diabetes statistics from recent studies.</p>
+                <div id="mini-chart-diabetes" class="h-32"></div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer Section -->
+<footer class="bg-gray-800 text-white py-4 mt-12">
+    <div class="container mx-auto text-center">
+        <p>&copy; 2024 Dynamic Data Dashboard. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+    // Example script to add mini chart placeholders for illustration
+    document.getElementById("mini-chart-population").textContent = "Population Chart Preview";
+    document.getElementById("mini-chart-obesity").textContent = "Obesity Chart Preview";
+    document.getElementById("mini-chart-diabetes").textContent = "Diabetes Chart Preview";
+</script>
