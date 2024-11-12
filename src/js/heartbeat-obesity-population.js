@@ -1,3 +1,4 @@
+let tooltip1;
 // Wait until the document is fully loaded
 document.addEventListener("DOMContentLoaded", function () {
     const visualizationContainer = document.getElementById("chart");
@@ -8,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const height = visualizationContainer.clientHeight - margin.top - margin.bottom;
 
     // Load the CSV data
-    d3.csv("../../data/ObesityStates.csv")
+    d3.csv("../data/ObesityStates.csv")
       .then((data) => {
         data.forEach((d) => {
           for (let key in d) {
@@ -130,6 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .attr("fill", color(stateName))
                 .attr("class", "data-point")
                 .on("mouseover", function (event) {
+                  console.log("Mouseover triggered");
                   d3.select(this).attr("fill", "black");
                   showTooltip(event, stateName, value, years[i]);
                 })
@@ -167,31 +169,51 @@ document.addEventListener("DOMContentLoaded", function () {
             .append("div")
             .attr("class", "legend-item flex items-center mr-4 cursor-pointer")
             .on("click", enableClick ? function (event, d) {
+              // Select the corresponding line path
               const linepath = d3.select(`.line[data-state="${d.States}"]`);
+              
+              // Check if the line is active or not
               const isActive = linepath.classed("active");
-
-              d3.selectAll(".line").style("opacity", 0.2);
-              linepath.classed("active", !isActive).style("opacity", 1);
+        
+              // Toggle opacity and "active" class for the line
+              d3.selectAll(".line")
+                .style("opacity", 0.2)  // Dim all lines
+                .classed("active", false);  // Remove active class from all lines
+              
+              linepath.style("opacity", 1)  // Highlight the clicked line
+                .classed("active", true);  // Set clicked line to active
+        
+              // Optionally, update the legend style (e.g., highlight the selected legend item)
+              d3.selectAll(".legend-item")
+                .style("font-weight", "normal");  // Reset all legends to normal
+              d3.select(this)
+                .style("font-weight", "bold");  // Highlight the clicked legend item
             } : null);
-
+        
           legend.append("div")
             .attr("class", "legend-color")
             .style("width", "18px")
             .style("height", "18px")
             .style("background-color", d => color(d.States))
             .style("margin-right", "8px");
-
+        
           legend.append("span")
             .text(d => d.States)
             .style("cursor", enableClick ? "pointer" : "default");
         }
+        
 
         function showTooltip(event, stateName, rate, year) {
           const [mouseX, mouseY] = d3.pointer(event);
+          console.log("Mouseover triggered on tooltip: ", stateName, rate, year);  // Debugging log
+          
+          const adjustedX = mouseX + margin.left + 10;
+          const adjustedY = mouseY + margin.top - 40;
+        
           d3.select("#tooltip1")
             .style("display", "block")
-            .style("left", mouseX + 10 + "px")
-            .style("top", mouseY - 40 + "px")
+            .style("left", adjustedX + "px")
+            .style("top", adjustedY + "px")
             .html(`State: ${stateName}<br>Year: ${year}<br>Rate: ${rate}%`);
         }
 

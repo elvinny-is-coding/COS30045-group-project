@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Obesity,Diabetes and Nutrition Impact in US</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script src="../js/script.js" ></script>
+  <script src="../js/data-table.js" defer></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- Navbar -->
+  <nav id="navbar" class="bg-blue-600 text-white p-4 flex items-center justify-between md:justify-between md:p-4">
+    <div class="flex items-center">
+      <span class="text-lg font-bold">ODNI US</span>
+    </div>
+    <button class="text-white focus:outline-none md:hidden" id="burger">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+    </button>
+    <div class="hidden md:flex md:space-x-4" id="nav-items-navbar">
+      <a href="../index.html" class="text-white hover:text-gray-300">Home</a>
+      <a href="./oecd-obesity-rates-mex-usa-gbr-2018.html" class="text-white hover:text-gray-300">OECD USA GBR MEX Obesity</a>
+      <a href="./population.html" class="text-white hover:text-gray-300">Population and Obesity</a>
+      <a href="./obesity-deathrates.html" class="text-white hover:text-gray-300">Obesity Death Rates</a>
+      <a href="./willbeidentified.html" class="text-white hover:text-gray-300">Diabetes XXXX</a>
+    </div>
+  </nav>
+   <!-- Sidebar -->
+   <div id="sidebar" class="fixed inset-0 z-30 bg-blue-600 text-white w-64 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
+    <button id="close-sidebar" class="text-white absolute top-4 right-4 focus:outline-none hidden">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    <div id="nav-items-sidebar" class="space-y-4 hidden">
+      <!-- Navigation items will be dynamically loaded here -->
+      <a href="../index.html" class="text-white hover:text-gray-300">Home</a>
+      <a href="./oecd-obesity-rates-mex-usa-gbr-2018.html" class="text-white hover:text-gray-300">OECD USA GBR MEX Obesity</a>
+      <a href="./population.html" class="text-white hover:text-gray-300">Population and Obesity</a>
+      <a href="./obesity-deathrates.html" class="text-white hover:text-gray-300">Obesity Death Rates</a>
+      <a href="./willbeidentified.html" class="text-white hover:text-gray-300">Diabetes XXXX</a>
+     </div>
+  </div>
+  
+
+  <!-- Content Wrapper -->
+  <div class="flex flex-col md:flex-row p-4">
+    
+    
+
+    <!-- Main Content -->
+<div id="main-content" class="flex-1 bg-white p-4 rounded shadow">
+  <script type="module" src="../js/bublechart.js"></script> <!-- Ensure you're loading the JS file -->
+  <!-- Title and Button Section -->
+  <div id="visualization-buttons" class="mb-4 flex space-x-4">
+    <button id="oecd-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+      OECD USA GBR MEX Obesity
+    </button>
+    <button id="population-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+        Population Map
+    </button>
+    <button id="obesity-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+        Obesity Map
+    </button>
+    <button id="obesity-dr-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+        Obesity Death Rate
+    </button>
+</div>
+<div id="visualization-title" class="mb-2 text-lg font-semibold text-gray-700">
+      <!-- Title will be set dynamically -->
+      OECD Obesity Data (2018) between United States of Americe, Great Britain and Mexico
+  </div>
+  
+
+  <script>
+    // Event listeners for buttons
+    document.getElementById("oecd-btn").addEventListener("click", () => {
+        window.location.href = "./oecd-obesity-rates-mex-usa-gbr-2018.html";
+    });
+    // Event listeners for buttons
+    document.getElementById("population-btn").addEventListener("click", () => {
+        window.location.href = "./population.html";
+    });
+
+    document.getElementById("obesity-btn").addEventListener("click", () => {
+        window.location.href = "./obesity.html";
+    });
+
+    document.getElementById("obesity-dr-btn").addEventListener("click", () => {
+      window.location.href = "./obesity-deathrates.html";
+    });
+</script>
+  
+  
+  <!-- Placeholder for dynamically loaded visualization -->
+  <div id="visualization" class="rounded flex items-center justify-center">
+      <span class="text-gray-500" id="visualize"></span>
+  </div>
+
+  <div id="legend"></div>
+  
+  
+  <!-- Tooltip for hover information -->
+  <div id="tooltip" class="absolute bg-white text-black px-2 py-1 rounded shadow-lg" style="display:none; position: absolute;"></div>
+  
+  <!-- Data Table -->
+  <!-- Data Table -->
+  <table id="data-table" class="w-full bg-white border rounded overflow-auto">
+    <thead>
+      
+    </thead>
+    <tbody></tbody>
+</table>
+
+<!-- Visualization Info -->
+<div id="visualization-info" class="mt-4 p-4 bg-gray-100 rounded-lg shadow-md text-gray-700">
+  <h2>OECD Obesity Data (2018)</h2>
+  <p>This visualization shows the obesity rates for three countries: the United States (USA), Mexico, and Great Britain (GB). The data is sourced from the OECD, which tracks various health metrics across member countries. Obesity is a significant public health issue, and this visualization helps to understand the obesity rate across different regions.</p>
+  <p><strong>Countries displayed:</strong> USA, Mexico, Great Britain</p>
+  <p><strong>Data Source:</strong> <a href="https://data-explorer.oecd.org/vis?pg=0&bp=true&snb=10&tm=Obesity&df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_REG_HEALTH%40DF_RISK&df[ag]=OECD.CFE.EDS&df[vs]=2.0&dq=A..AUS%2BAU1%2BAU2%2BAU3%2BAU4%2BAU5%2BAU6%2BAU7%2BAU8%2BAUT%2BAT11%2BAT111%2BAT112%2BAT113%2BAT12%2BAT121%2BAT122%2BAT123%2BAT124%2BAT125%2BAT126%2BAT127%2BAT13%2BAT130%2BAT21%2BAT211%2BAT212%2BAT213%2BAT22%2BAT221%2BAT222%2BAT223%2BAT224%2BAT225%2BAT226%2BAT31%2BAT311%2BAT312%2BAT313%2BAT314%2BAT315%2BAT32%2BAT321%2BAT322%2BAT323%2BAT33%2BAT331%2BAT332%2BAT333%2BAT334%2BAT335%2BAT34%2BAT341%2BAT342..PM25_POP_EXP%2BOBESITY...&lom=LASTNPERIODS&lo=5&to[TIME_PERIOD]=false" target="_blank">OECD Data Explorer</a></p>
+</div>
+   
+</div>
+
+  <script>
+
+    
+    // Toggle the sidebar visibility on small screens
+    const burgerButton = document.getElementById('burger');
+    const sidebar = document.getElementById('sidebar');
+    const closeSidebarButton = document.getElementById('close-sidebar');
+    const navItemsSidebar = document.getElementById('nav-items-sidebar');
+
+    burgerButton.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+      closeSidebarButton.classList.toggle('hidden');
+      navItemsSidebar.classList.toggle('hidden'); // Toggle sidebar nav items
+    });
+
+    closeSidebarButton.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      closeSidebarButton.classList.add('hidden');
+      navItemsSidebar.classList.add('hidden'); // Hide sidebar nav items
+    });
+
+    
+  </script>
+
+  <script>
+    
+  </script>
+
+</body>
+</html>
+

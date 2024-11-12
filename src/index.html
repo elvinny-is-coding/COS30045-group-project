@@ -3,28 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Data Dashboard</title>
+    <title>Obesity,Diabetes and Nutrition Impact in US</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="js/script.js"></script>
 </head>
 <body class="bg-gray-100 font-sans">
-<!-- Navbar -->
-<nav id="navbar" class="bg-blue-600 text-white p-4 flex items-center justify-between md:justify-between md:p-4">
+
+  <!-- Navbar -->
+  <nav id="navbar" class="bg-blue-600 text-white p-4 flex items-center justify-between md:justify-between md:p-4">
     <div class="flex items-center">
-      <span class="text-lg font-bold">Dashboard</span>
+      <span class="text-lg font-bold">ODNI US</span>
     </div>
-    <button id="burger" class="text-white focus:outline-none md:hidden">
+    <button class="text-white focus:outline-none md:hidden" id="burger">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
       </svg>
     </button>
-    <div id="nav-items-navbar" class="hidden md:flex md:space-x-4">
-      <!-- Navigation items will be dynamically loaded here -->
+    <div class="hidden md:flex md:space-x-4" id="nav-items-navbar">
+      <a href="index.html" class="text-white hover:text-gray-300">Home</a>
+      <a href="pages/oecd-obesity-rates-mex-usa-gbr-2018.html" class="text-white hover:text-gray-300">OECD USA GBR MEX Obesity</a>
+      <a href="pages/population.html" class="text-white hover:text-gray-300">Population and Obesity</a>
+      <a href="pages/obesity-deathrates.html" class="text-white hover:text-gray-300">Obesity Death Rates</a>
+      <a href="pages/willbeidentified.html" class="text-white hover:text-gray-300">Diabetes XXXX</a>
     </div>
   </nav>
-
-  <!-- Sidebar -->
-  <div id="sidebar" class="fixed inset-0 z-30 bg-blue-600 text-white w-64 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
+   <!-- Sidebar -->
+   <div id="sidebar" class="fixed inset-0 z-30 bg-blue-600 text-white w-64 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
     <button id="close-sidebar" class="text-white absolute top-4 right-4 focus:outline-none hidden">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -32,9 +37,14 @@
     </button>
     <div id="nav-items-sidebar" class="space-y-4 hidden">
       <!-- Navigation items will be dynamically loaded here -->
-       
+      <a href="index.html" class="text-white hover:text-gray-300">Home</a>
+      <a href="pages/oecd-obesity-rates-mex-usa-gbr-2018.html" class="text-white hover:text-gray-300">OECD USA GBR MEX Obesity</a>
+      <a href="pages/population.html" class="text-white hover:text-gray-300">Population and Obesity</a>
+      <a href="pages/obesity-deathrates.html" class="text-white hover:text-gray-300">Obesity Death Rates</a>
+      <a href="pages/willbeidentified.html" class="text-white hover:text-gray-300">Diabetes XXXX</a>
      </div>
   </div>
+  
   
 <!-- Header Section -->
 <header class="bg-blue-600 text-white p-6 shadow-lg">
@@ -61,19 +71,23 @@
         <h2 class="text-2xl font-semibold mb-6">Explore the Data</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Population Visualization Link -->
-            <a href="pages/map/population.html" class="block p-6 bg-white rounded-lg shadow hover:bg-blue-50 transition">
+            <a href="pages/pages/oecd-obesity-rates-mex-usa-gbr-2018.html.html" class="block p-6 bg-white rounded-lg shadow hover:bg-blue-50 transition">
+                <h3 class="text-xl font-semibold text-blue-600">OECD Obesity 2018 Rates between USA, MEX, GB </h3>
+                <p class="text-gray-600 mt-2">Explore population data by region and see demographic patterns.</p>
+            </a>
+            <a href="pages/population.html" class="block p-6 bg-white rounded-lg shadow hover:bg-blue-50 transition">
                 <h3 class="text-xl font-semibold text-blue-600">Population Map</h3>
                 <p class="text-gray-600 mt-2">Explore population data by region and see demographic patterns.</p>
             </a>
 
             <!-- Obesity Visualization Link -->
-            <a href="pages/map/obesity.html" class="block p-6 bg-white rounded-lg shadow hover:bg-blue-50 transition">
+            <a href="pages/obesity.html" class="block p-6 bg-white rounded-lg shadow hover:bg-blue-50 transition">
                 <h3 class="text-xl font-semibold text-blue-600">Obesity Map</h3>
                 <p class="text-gray-600 mt-2">Visualize obesity statistics across various regions over time.</p>
             </a>
 
             <!-- Diabetes Visualization Link -->
-            <a href="pages/map/diabetes.html" class="block p-6 bg-white rounded-lg shadow hover:bg-blue-50 transition">
+            <a href="pages/diabetes.html" class="block p-6 bg-white rounded-lg shadow hover:bg-blue-50 transition">
                 <h3 class="text-xl font-semibold text-blue-600">Diabetes Map</h3>
                 <p class="text-gray-600 mt-2">Analyze diabetes prevalence and trends within populations.</p>
             </a>

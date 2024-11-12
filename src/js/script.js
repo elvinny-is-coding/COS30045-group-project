@@ -1,7 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
-    loadNav();
-    loadVisualization('map-vis/map.js'); // Load initial visualization
-});
+
 
 // // Load Navigation dynamically
 // function loadNav() {
@@ -69,8 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // }
 
 // Clear Visualization
-function clearVisualization() {
-    document.getElementById('visualization-title').textContent = '';
-    document.getElementById('visualization-buttons').innerHTML = '';
-    d3.select("#visualization").selectAll("*").remove();
-}
+// function clearVisualization() {
+//     document.getElementById('visualization-title').textContent = '';
+//     document.getElementById('visualization-buttons').innerHTML = '';
+//     d3.select("#visualization").selectAll("*").remove();
+// }

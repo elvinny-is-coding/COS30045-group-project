@@ -4,7 +4,7 @@ const endYear = 2023;
 let selectedYear = 2023; // Start with the default year
 
 // Define global variables for data
-let populationData, obesityLookup, geoData;
+let populationData, diabetesLookup, geoData;
 
 export function loadPopulationData() {
   loadData();
@@ -13,22 +13,22 @@ export function loadPopulationData() {
 // Function to load data and display visualization
 function loadData() {
   Promise.all([
-    d3.csv("../../data/usa-population.csv"),
-    d3.csv("../../data/ObesityStates.csv"),
-    d3.json("../../data/states.geojson"),
+    d3.csv("../data/usa-population.csv"),
+    d3.csv("../data/DiabetesStates.csv"),
+    d3.json("../data/states.geojson"),
   ])
     .then((data) => {
       // Set global data variables for dynamic updates
       populationData = data[0];
-      obesityLookup = calculateObesityRate(
+      diabetesLookup = calculateDiabetesRate(
         data[1],
         createPopulationLookup(data[0])
       );
       geoData = data[2];
 
       // Initial visualization setup for the default year (2023)
-      drawMap(geoData, populationData, obesityLookup);
-      displayCSVData(formatDataForTable(populationData, obesityLookup, "2023"));
+      drawMap(geoData, populationData, diabetesLookup);
+      displayCSVData(formatDataForTable(populationData, diabetesLookup, "2023"));
 
       // Update title for the default year
       updateVisualizationTitle(2023);
@@ -41,38 +41,44 @@ function loadData() {
 
 function addYearSelection() {
   const yearContainer = d3.select("#year-selection");
-  yearContainer.html(""); // Clear existing year buttons
+  yearContainer.html(""); // Clear existing elements
 
-  // Add label for the year selection
+  // Add label for year selection
   yearContainer
     .append("div")
     .attr("class", "mb-4")
     .append("label")
-    .attr("for", "filter1")
+    .attr("for", "year-slider")
     .attr("class", "block text-sm font-medium text-gray-700")
     .text("Choose a year");
 
-  // Add button container
-  const buttonContainer = yearContainer
-    .append("div")
-    .attr(
-      "class",
-      "button-container flex flex-col items-center space-y-4 mt-4"
-    );
+  // Create the slider with default value set to 2023
+  const slider = yearContainer
+    .append("input")
+    .attr("type", "range")
+    .attr("min", startYear)
+    .attr("max", endYear)
+    .attr("step", 1)
+    .attr("value", 2023)  // Set default value to 2023
+    .attr("id", "year-slider")
+    .attr("class", "slider w-full h-2 bg-blue-200 rounded-full");
 
-  // Create buttons for each year
-  for (let year = startYear; year <= endYear; year++) {
-    buttonContainer
-      .append("button")
-      .attr(
-        "class",
-        "w-full h-12 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition ease-in-out duration-200"
-      )
-      .text(year)
-      .on("click", function () {
-        updateVisualizationForYear(year);
-      });
-  }
+  // Display the current year next to the slider (default 2023)
+  const yearLabel = yearContainer
+    .append("span")
+    .attr("id", "year-label")
+    .attr("class", "ml-2 text-lg font-medium text-gray-700")
+    .text(2023);  // Default year label
+
+  // Update the year on slider change
+  slider.on("input", function () {
+    const selectedYear = this.value;
+    yearLabel.text(selectedYear);
+    updateVisualizationForYear(selectedYear);
+  });
+
+  // Call the update function with 2023 as default on page load
+  updateVisualizationForYear(2023);
 }
 
 function updateVisualizationForYear(year) {
@@ -85,7 +91,7 @@ function updateVisualizationForYear(year) {
   // Update the table and map with the selected year's data
   const relevantData = formatDataForTable(
     populationData,
-    obesityLookup,
+    diabetesLookup,
     selectedYear
   );
   displayCSVData(relevantData);
@@ -95,7 +101,7 @@ function updateVisualizationForYear(year) {
   drawPopulationMap(
     geoData,
     createPopulationLookup(populationData),
-    obesityLookup
+    diabetesLookup
   );
 
   // Update the title with the selected year
@@ -104,7 +110,7 @@ function updateVisualizationForYear(year) {
 
 // Function to update the visualization title with the selected year
 function updateVisualizationTitle(year) {
-  const title = `Population With Obesity Year ${year}`;
+  const title = `Population With Diabetes Year ${year}`;
   d3.select("#visualization-title").text(title);
 }
 
@@ -125,39 +131,39 @@ function createPopulationLookup(populationData) {
   return lookup;
 }
 
-// Function to calculate obesity rate as a percentage of population
-function calculateObesityRate(obesityData, populationLookup) {
-  const obesityLookup = {};
+// Function to calculate diabetes rate as a percentage of population
+function calculateDiabetesRate(diabetesData, populationLookup) {
+  const diabetesLookup = {};
 
-  obesityData.forEach((row) => {
+  diabetesData.forEach((row) => {
     const state = row["States"] ? row["States"].trim() : null;
     if (!state) return;
 
-    // Assuming obesity rates are in different columns for different years
+    // Assuming diabetes rates are in different columns for different years
     Object.keys(row).forEach((year) => {
       if (!isNaN(year) && year >= 2011 && year <= 2023) {
         // Ensure we only process valid years
-        const obesityRate = +row[year]; // Get the rate for that year
+        const diabetesRate = +row[year]; // Get the rate for that year
         const population = populationLookup[state];
 
-        // Calculate obesity percentage if both values are available
-        if (population && !isNaN(obesityRate)) {
-          const obesityPopulation = (population * obesityRate) / 100; // Calculate obesity population
-          obesityLookup[state] = obesityLookup[state] || {};
-          obesityLookup[state][year] = {
-            rate: obesityRate.toFixed(2), // Format to two decimal places
-            population: Math.round(obesityPopulation), // Round to nearest whole number
+        // Calculate diabetes percentage if both values are available
+        if (population && !isNaN(diabetesRate)) {
+          const diabetesPopulation = (population * diabetesRate) / 100; // Calculate diabetes population
+          diabetesLookup[state] = diabetesLookup[state] || {};
+          diabetesLookup[state][year] = {
+            rate: diabetesRate.toFixed(2), // Format to two decimal places
+            population: Math.round(diabetesPopulation), // Round to nearest whole number
           };
         }
       }
     });
   });
 
-  return obesityLookup;
+  return diabetesLookup;
 }
 
-// Function to draw visualization with both population and obesity data
-function drawMap(geoData, populationLookup, obesityLookup) {
+// Function to draw visualization with both population and diabetes data
+function drawMap(geoData, populationLookup, diabetesLookup) {
   const visualizationContainer = document.getElementById("visualization");
   if (!visualizationContainer) {
     console.error("Visualization container not found");
@@ -187,8 +193,8 @@ function drawMap(geoData, populationLookup, obesityLookup) {
   // Initialize tooltip
   initTooltip();
 
-  // Draw the map with population and obesity data
-  drawPopulationMap(geoData, populationLookup, obesityLookup);
+  // Draw the map with population and diabetes data
+  drawPopulationMap(geoData, populationLookup, diabetesLookup);
 }
 
 // Initialize tooltip
@@ -205,8 +211,8 @@ function initTooltip() {
     .style("display", "none");
 }
 
-// Draw population map function with obesity data
-function drawPopulationMap(geoData, populationLookup, obesityLookup) {
+// Draw population map function with diabetes data
+function drawPopulationMap(geoData, populationLookup, diabetesLookup) {
   if (!geoData.features) {
     console.error("No features found in geoData.");
     return;
@@ -215,7 +221,7 @@ function drawPopulationMap(geoData, populationLookup, obesityLookup) {
   // Create a color scale for the gradient
   const colorScale = d3
     .scaleSequential()
-    .domain([0, 40]) // Assuming obesity rates range from 0 to 40%
+    .domain([0, 40]) // Assuming diabetes rates range from 0 to 40%
     .interpolator(d3.interpolateReds);
 
     svg
@@ -226,231 +232,109 @@ function drawPopulationMap(geoData, populationLookup, obesityLookup) {
     .attr("d", path)
     .attr("fill", (d) => {
       const stateName = d.properties.NAME;
-      const obesityData = obesityLookup[stateName]
-        ? obesityLookup[stateName][selectedYear]
+      const diabetesData = diabetesLookup[stateName]
+        ? diabetesLookup[stateName][selectedYear]
         : null;
-      const obesityRate = obesityData ? obesityData.rate : 0;
-      return colorScale(obesityRate);
+      const diabetesRate = diabetesData ? diabetesData.rate : 0;
+      return colorScale(diabetesRate);
     })
     .attr("stroke", "black")
     .on("mouseover", function (event, d) {
-      handleMouseOver(event, d, populationLookup, obesityLookup);
+      handleMouseOver(event, d, populationLookup, diabetesLookup);
     })
     .on("mouseout", handleMouseOut);
 
-  console.log("Population map with obesity data drawn.");
+  console.log("Population map with diabetes data drawn.");
 
   // Draw the legend
   drawLegend(colorScale);
 }
 
 // Handle mouse over event
-function handleMouseOver(event, d, populationLookup, obesityLookup) {
+function handleMouseOver(event, d, populationLookup, diabetesLookup) {
   const stateName = d.properties.NAME; // Extract the state name from the geo data
   const population = populationLookup[stateName] || "Unknown Population"; // Fetch total resident population
 
-  // Access obesity data for the selected year dynamically
-  const obesityData = obesityLookup[stateName] || {};
-  const obesityRate = obesityData[selectedYear]
-    ? obesityData[selectedYear].rate
+  // Access diabetes data for the selected year dynamically
+  const diabetesData = diabetesLookup[stateName] || {};
+  const diabetesRate = diabetesData[selectedYear]
+    ? diabetesData[selectedYear].rate
     : "Data Not Available";
-  const obesityPopulation = obesityData[selectedYear]
-    ? obesityData[selectedYear].population
+  const diabetesPopulation = diabetesData[selectedYear]
+    ? diabetesData[selectedYear].population
     : "Data Not Available";
 
   tooltip
     .style("display", "inline-block")
-    .style("left", event.pageX + 10 + "px")
-    .style("top", event.pageY + 10 + "px")
-    .html(
-      `<strong>${stateName}</strong><br>Population: ${population}<br>Obesity Rate: ${obesityRate}%<br>Obesity Population: ${obesityPopulation}`
-    );
-
-  d3.select(this).attr("fill", "blue"); // Change color of the hovered state
+    .style("left", event.pageX + "px")
+    .style("top", event.pageY + "px")
+    .html(`
+      <strong>${stateName}</strong><br>
+      Population: ${population}<br>
+      Diabetes Rate: ${diabetesRate}%<br>
+      Diabetes Population: ${diabetesPopulation}
+    `);
 }
 
 // Handle mouse out event
 function handleMouseOut() {
   tooltip.style("display", "none");
-  d3.select(this).attr("fill", (d) => {
-    const stateName = d.properties.NAME;
-    const obesityData = obesityLookup[stateName]
-      ? obesityLookup[stateName][selectedYear]
-      : null;
-    const obesityRate = obesityData ? obesityData.rate : 0;
-    return colorScale(obesityRate);
-  });
 }
 
-// Function to clear existing map or visualization before loading new data
+// Function to clear the map
 function clearMap() {
   if (svg) {
-    svg.selectAll("*").remove(); // Clear all previous SVG elements
+    svg.selectAll("*").remove(); // Remove all elements from the SVG
   }
 }
 
-// Draw the legend for the gradient
-function drawLegend(colorScale) {
-  const legendWidth = 300;
-  const legendHeight = 20;
-
-  // Create a gradient legend using SVG
-  const legendSvg = svg
-    .append("g")
-    .attr("class", "legend")
-    .attr(
-      "transform",
-      `translate(${(svg.attr("width") - legendWidth) / 2}, 20)`
-    );
-
-  // Create the gradient definition
-  const gradient = legendSvg
-    .append("defs")
-    .append("linearGradient")
-    .attr("id", "legendGradient")
-    .attr("x1", "0%")
-    .attr("x2", "100%")
-    .attr("y1", "0%")
-    .attr("y2", "0%");
-
-  // Define the gradient color stops
-  gradient
-    .append("stop")
-    .attr("offset", "0%")
-    .attr("stop-color", colorScale(0));
-  gradient
-    .append("stop")
-    .attr("offset", "100%")
-    .attr("stop-color", colorScale(40));
-
-  // Create the legend rectangle and fill it with the gradient
-  legendSvg
-    .append("rect")
-    .attr("width", legendWidth)
-    .attr("height", legendHeight)
-    .style("fill", "url(#legendGradient)");
-
-  // Add legend axis (scale) for context
-  const legendScale = d3.scaleLinear().domain([0, 40]).range([0, legendWidth]);
-
-  const legendAxis = d3.axisBottom(legendScale).ticks(5);
-
-  legendSvg
-    .append("g")
-    .attr("class", "legend-axis")
-    .attr("transform", `translate(0, ${legendHeight})`)
-    .call(legendAxis);
-}
-
-let currentPage = 1;
-const rowsPerPage = 10;
-
-// Function to display CSV data in a table with pagination
-function displayCSVData(data) {
-  clearTable(); // Clear existing table data
-
-  const table = d3.select("#data-table");
-  if (!table.node()) {
-    console.error("Table element with id 'data-table' not found in the DOM.");
-    return;
-  }
-
-  if (data.length === 0) {
-    console.error("No relevant data found to display.");
-    return;
-  }
-
-  // Calculate total pages
-  const totalPages = Math.ceil(data.length / rowsPerPage);
-
-  // Function to render table rows for the current page
-  function renderPage(page) {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-    const paginatedData = data.slice(start, end);
-
-    // Clear existing rows
-    table.select("tbody").selectAll("tr").remove();
-
-    // Append data rows
-    const rows = table
-      .select("tbody")
-      .selectAll("tr")
-      .data(paginatedData)
-      .enter()
-      .append("tr")
-      .attr("class", "hover:bg-gray-50 transition duration-150 ease-in-out");
-
-    rows
-      .selectAll("td")
-      .data((d) => [
-        d.State,
-        d.Population,
-        d["Obesity Rate (%)"],
-        d["Obesity Population"],
-      ]) // Extract relevant data
-      .enter()
-      .append("td")
-      .attr("class", "border border-gray-300 py-3 px-4 text-sm")
-      .text((d) => d);
-
-    // Update pagination info
-    d3.select("#page-info").text(`Slide ${currentPage} of ${totalPages}`);
-
-    // Update button states
-    d3.select("#prev-button").property("disabled", currentPage === 1);
-    d3.select("#next-button").property("disabled", currentPage === totalPages);
-  }
-
-  // Initial render
-  renderPage(currentPage);
-
-  // Pagination controls
-  d3.select("#prev-button").on("click", () => {
-    if (currentPage > 1) {
-      currentPage--;
-      renderPage(currentPage);
-    }
-  });
-
-  d3.select("#next-button").on("click", () => {
-    if (currentPage < totalPages) {
-      currentPage++;
-      renderPage(currentPage);
-    }
-  });
-}
-
-// Function to clear existing table data
-function clearTable() {
-  d3.select("#data-table").select("tbody").selectAll("tr").remove();
-  console.log("Table cleared."); // Log to confirm table was cleared
-}
-
-// Function to format data for the table display based on selected year
-function formatDataForTable(populationData, obesityLookup, year) {
+// Function to format data for the table
+function formatDataForTable(populationData, diabetesLookup, year) {
   return populationData.map((row) => {
-    const state = row["Geographic Area"];
-    const population = +row["Total Resident Population"];
-    const obesityData = obesityLookup[state]
-      ? obesityLookup[state][year]
-      : null;
-    const obesityRate = obesityData ? obesityData.rate : "Data Not Available";
-    const obesityPopulation = obesityData
-      ? obesityData.population
-      : "Data Not Available";
+    const stateName = row["Geographic Area"];
+    const population = row["Total Resident Population"];
+    const diabetesRate = diabetesLookup[stateName]
+      ? diabetesLookup[stateName][year].rate
+      : 0;
+    const diabetesPopulation = diabetesLookup[stateName]
+      ? diabetesLookup[stateName][year].population
+      : 0;
 
     return {
-      State: state,
-      Population: population,
-      "Obesity Rate (%)": obesityRate,
-      "Obesity Population": obesityPopulation,
+      state: stateName,
+      population: population,
+      diabetesRate: diabetesRate,
+      diabetesPopulation: diabetesPopulation,
     };
   });
 }
 
-// Call the loadPopulationData function to initialize the visualization
-loadPopulationData();
+// Function to display data in the table
+function displayCSVData(data) {
+  const tableContainer = document.getElementById("csv-table");
+  if (!tableContainer) {
+    console.error("Table container not found");
+    return;
+  }
 
+  // Clear the existing table content
+  tableContainer.innerHTML = "";
 
-  
+  const table = tableContainer.appendChild(document.createElement("table"));
+  table.classList.add("table", "table-striped");
+
+  const headerRow = table.insertRow();
+  Object.keys(data[0]).forEach((key) => {
+    const cell = headerRow.insertCell();
+    cell.textContent = key;
+    cell.style.fontWeight = "bold";
+  });
+
+  data.forEach((row) => {
+    const rowElement = table.insertRow();
+    Object.values(row).forEach((value) => {
+      const cell = rowElement.insertCell();
+      cell.textContent = value;
+    });
+  });
+}

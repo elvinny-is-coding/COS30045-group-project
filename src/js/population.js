@@ -8,7 +8,7 @@ export function loadPopulationData() {
 
 // Function to load population data and display table
 function loadData() {
-    Promise.all([d3.csv("../../data/usa-population.csv"), d3.json("../../data/states.geojson")])
+    Promise.all([d3.csv("../data/usa-population.csv"), d3.json("../data/states.geojson")])
         .then(([populationData, geoJsonData]) => {
             geoData = geoJsonData;
             populationLookup = {};
