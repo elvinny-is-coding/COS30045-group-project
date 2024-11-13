@@ -17,38 +17,90 @@
   <body class="bg-gray-100 font-sans">
     <!-- Navbar -->
     <!-- Navbar -->
-  <nav id="navbar" class="bg-blue-600 text-white p-4 flex items-center justify-between md:justify-between md:p-4">
-    <div class="flex items-center">
-      <span class="text-lg font-bold">ODNI US</span>
+    <nav
+      id="navbar"
+      class="bg-blue-600 text-white p-4 flex items-center justify-between md:justify-between md:p-4"
+    >
+      <div class="flex items-center">
+        <span class="text-lg font-bold">ODNI US</span>
+      </div>
+      <button class="text-white focus:outline-none md:hidden" id="burger">
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16m-7 6h7"
+          ></path>
+        </svg>
+      </button>
+      <div class="hidden md:flex md:space-x-4" id="nav-items-navbar">
+        <a href="../index.html" class="text-white hover:text-gray-300">Home</a>
+        <a
+          href="./oecd-obesity-rates-mex-usa-gbr-2018.html"
+          class="text-white hover:text-gray-300"
+          >OECD USA GBR MEX Obesity</a
+        >
+        <a href="population.html" class="text-white hover:text-gray-300"
+          >Population Map</a
+        >
+        <a href="obesity-deathrates.html" class="text-white hover:text-gray-300"
+          >Obesity Death Rates</a
+        >
+        <a href="diabetes-sankey.html" class="text-white hover:text-gray-300"
+          >Diabetes Risk</a
+        >
+        <a href="diabetes-risk.html" class="text-white hover:text-gray-300"
+          >Diabetes Impact</a
+        >
+      </div>
+    </nav>
+    <!-- Sidebar -->
+    <div
+      id="sidebar"
+      class="fixed inset-0 z-30 bg-blue-600 text-white w-64 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0"
+    >
+      <button
+        id="close-sidebar"
+        class="text-white absolute top-4 right-4 focus:outline-none hidden"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+      </button>
+      <div id="nav-items-sidebar" class="space-y-4 hidden">
+        <!-- Navigation items will be dynamically loaded here -->
+        <a href="../index.html" class="text-white hover:text-gray-300">Home</a>
+        <a href="./population.html" class="text-white hover:text-gray-300"
+          >Population and Obesity</a
+        >
+        <a
+          href="./obesity-deathrates.html"
+          class="text-white hover:text-gray-300"
+          >Obesity Death Rates</a
+        >
+        <a href="./willbeidentified.html" class="text-white hover:text-gray-300"
+          >Diabetes XXXX</a
+        >
+      </div>
     </div>
-    <button class="text-white focus:outline-none md:hidden" id="burger">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-      </svg>
-    </button>
-    <div class="hidden md:flex md:space-x-4" id="nav-items-navbar">
-      <a href="../index.html" class="text-white hover:text-gray-300">Home</a>
-      <a href="./population.html" class="text-white hover:text-gray-300">Population and Obesity</a>
-      <a href="./obesity-deathrates.html" class="text-white hover:text-gray-300">Obesity Death Rates</a>
-      <a href="./willbeidentified.html" class="text-white hover:text-gray-300">Diabetes XXXX</a>
-    </div>
-  </nav>
-   <!-- Sidebar -->
-   <div id="sidebar" class="fixed inset-0 z-30 bg-blue-600 text-white w-64 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
-    <button id="close-sidebar" class="text-white absolute top-4 right-4 focus:outline-none hidden">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-      </svg>
-    </button>
-    <div id="nav-items-sidebar" class="space-y-4 hidden">
-      <!-- Navigation items will be dynamically loaded here -->
-      <a href="../index.html" class="text-white hover:text-gray-300">Home</a>
-      <a href="./population.html" class="text-white hover:text-gray-300">Population and Obesity</a>
-      <a href="./obesity-deathrates.html" class="text-white hover:text-gray-300">Obesity Death Rates</a>
-      <a href="./willbeidentified.html" class="text-white hover:text-gray-300">Diabetes XXXX</a>
-     </div>
-  </div>
-  
 
     <!-- Content Wrapper -->
     <div class="flex flex-col md:flex-row p-4">
@@ -62,10 +114,16 @@
 
         <h2>Sort Year</h2>
         <div id="year-selection" class="mb-4">
-          <button id="sort-asc-btn" class="w-full py-2 px-4 bg-blue-500 text-white rounded-md mb-2 hover:bg-blue-600">
+          <button
+            id="sort-asc-btn"
+            class="w-full py-2 px-4 bg-blue-500 text-white rounded-md mb-2 hover:bg-blue-600"
+          >
             Low to High
           </button>
-          <button id="sort-desc-btn" class="w-full py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-600">
+          <button
+            id="sort-desc-btn"
+            class="w-full py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-600"
+          >
             High to Low
           </button>
         </div>

@@ -23,10 +23,29 @@
     </button>
     <div class="hidden md:flex md:space-x-4" id="nav-items-navbar">
       <a href="../index.html" class="text-white hover:text-gray-300">Home</a>
-      <a href="./oecd-obesity-rates-mex-usa-gbr-2018.html" class="text-white hover:text-gray-300">OECD USA GBR MEX Obesity</a>
-      <a href="./population.html" class="text-white hover:text-gray-300">Population and Obesity</a>
-      <a href="./obesity-deathrates.html" class="text-white hover:text-gray-300">Obesity Death Rates</a>
-      <a href="./willbeidentified.html" class="text-white hover:text-gray-300">Diabetes XXXX</a>
+      <a
+        href="./oecd-obesity-rates-mex-usa-gbr-2018.html"
+        class="text-white hover:text-gray-300"
+        >OECD USA GBR MEX Obesity</a
+      >
+      <a href="population.html" class="text-white hover:text-gray-300"
+        >Population Map</a
+      >
+      <a
+        href="obesity-deathrates.html"
+        class="text-white hover:text-gray-300"
+        >Obesity Death Rates</a
+      >
+      <a
+        href="diabetes-sankey.html"
+        class="text-white hover:text-gray-300"
+        >Diabetes Risk</a
+      >
+      <a
+        href="diabetes-risk.html"
+        class="text-white hover:text-gray-300"
+        >Diabetes Impact</a
+      >
     </div>
   </nav>
    <!-- Sidebar -->
@@ -117,10 +136,27 @@
 
 <!-- Visualization Info -->
 <div id="visualization-info" class="mt-4 p-4 bg-gray-100 rounded-lg shadow-md text-gray-700">
-  <h2>Diabetes Type II Risk Factors</h2>
-  <p>This sunburst chart visualizes diabetes risk factors across multiple dimensions, including dietary risk, geographic location, gender, and age range. Each layer of the chart represents a different level in this hierarchy, allowing users to explore diabetes risk factors from broad categories down to specific demographics.</p>
+  <h2>Global Diabetes Risk Factors</h2>
+  <p>This interactive sunburst chart visualizes diabetes risk factors across multiple dimensions: dietary risk, geographic location, gender, and age range. The chart allows users to explore the hierarchy of data, from broad categories to specific demographic groups, by zooming in and out.</p>
+  <br>
+  <h3>How to Interact:</h3>
+  <ul class="list-disc pl-5">
+    <li><strong>Zoom In:</strong> Click on any section to zoom in and explore the next level of detail (e.g., from dietary risk to specific countries or age groups).</li>
+    <li><strong>Zoom Out:</strong> Click on the center circle or use the "back" navigation to zoom out to the previous level.</li>
+    <li><strong>Hover:</strong> Hover over any section to view more information about that category, including its value.</li>
+  </ul>
+ <br>
+  <h3>How to Interpret:</h3>
+  <ul class="list-disc pl-5">
+    <li><strong>Each Ring:</strong> Represents a different layer of the data hierarchy. Starting from the outermost ring, the layers represent broader categories like dietary risk, moving towards more specific groups like gender and age range.</li>
+    <li><strong>Color:</strong> Different colors are used to distinguish between categories and levels in the hierarchy. Each section's color corresponds to its category (e.g., different colors for different regions or demographic groups).</li>
+    <li><strong>Size:</strong> The size of each segment indicates the value or count associated with that category, allowing users to easily compare the relative size of different groups.</li>
+  </ul>
+<br>
   <p><strong>Layers Displayed:</strong> Dietary Risk, Location, Gender, Age Range</p>
-  <p><strong>Data Source:</strong> https://vizhub.healthdata.org/gbd-results/</p>
+  <p><strong>Data Source:</strong> Global Burden of Disease Study 2021 (GBD 2021) Mortality and Life Expectancy Forecasts 2022-2050</p>
+  <p><strong>Organization:</strong> IHME</p>
+
 </div>
 
    
