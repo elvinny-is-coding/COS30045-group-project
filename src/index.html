@@ -63,52 +63,27 @@
         >
       </div>
     </nav>
-    <!-- Sidebar -->
-    <div
-      id="sidebar"
-      class="fixed inset-0 z-30 bg-blue-600 text-white w-64 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0"
-    >
-      <button
-        id="close-sidebar"
-        class="text-white absolute top-4 right-4 focus:outline-none hidden"
-      >
-        <svg
-          class="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          ></path>
-        </svg>
-      </button>
-      <div id="nav-items-sidebar" class="space-y-4 hidden">
-        <!-- Navigation items will be dynamically loaded here -->
-        <a href="index.html" class="text-white hover:text-gray-300">Home</a>
-        <a
-          href="pages/oecd-obesity-rates-mex-usa-gbr-2018.html"
-          class="text-white hover:text-gray-300"
-          >OECD USA GBR MEX Obesity</a
-        >
-        <a href="pages/population.html" class="text-white hover:text-gray-300"
-          >Population and Obesity</a
-        >
-        <a
-          href="pages/obesity-deathrates.html"
-          class="text-white hover:text-gray-300"
-          >Obesity Death Rates</a
-        >
-        <a
-          href="pages/willbeidentified.html"
-          class="text-white hover:text-gray-300"
-          >Diabetes Risk & Impact</a
-        >
-      </div>
+<!-- Sidebar -->
+<div id="sidebar" class="fixed inset-0 z-30 bg-blue-600 text-white w-64 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
+    <!-- Close Button -->
+    <button id="close-sidebar" class="text-white absolute top-4 right-4 focus:outline-none hidden">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    
+    <!-- Navigation Items -->
+    <div id="nav-items-sidebar" class="space-y-4 flex flex-col items-start p-4 hidden">
+      <a href="./index.html" class="text-white hover:text-gray-300 py-2 px-4 w-full text-left">Home</a>
+      <a href="./pages/oecd-obesity-rates-mex-usa-gbr-2018.html" class="text-white hover:text-gray-300 py-2 px-4 w-full text-left">OECD USA GBR MEX Obesity</a>
+      <a href="./pages/population.html" class="text-white hover:text-gray-300 py-2 px-4 w-full text-left">Population Map</a>
+      <a href="./pages/obesity-deathrates.html" class="text-white hover:text-gray-300 py-2 px-4 w-full text-left">Obesity Death Rates</a>
+      <a href="./pages/diabetes-sankey.html" class="text-white hover:text-gray-300 py-2 px-4 w-full text-left">Diabetes Risk</a>
+      <a href="./pages/diabetes-risk.html" class="text-white hover:text-gray-300 py-2 px-4 w-full text-left">Diabetes Impact</a>
+    </div>
+  </div>
+
+   
     </div>
 
     <!-- Header Section -->
@@ -146,7 +121,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <!-- Population Visualization Link -->
           <a
-            href="pages/pages/oecd-obesity-rates-mex-usa-gbr-2018.html.html"
+            href="pages/oecd-obesity-rates-mex-usa-gbr-2018.html"
             class="block p-6 bg-white rounded-lg shadow hover:bg-blue-50 transition"
           >
             <h3 class="text-xl font-semibold text-blue-600">
@@ -196,7 +171,7 @@
               Obesity Death Rates
             </h3>
             <p class="text-gray-600 mt-2">
-              Analyze death rate caused by obesity and its category
+              Analyze death rate caused by obesity and its category.
             </p>
           </a>
           <!-- Diabetes Visualization Link -->
@@ -206,7 +181,7 @@
           >
             <h3 class="text-xl font-semibold text-blue-600">Diabetes Risk</h3>
             <p class="text-gray-600 mt-2">
-              Analyze death rate caused by obesity and its category
+              Analyze dietary risk associated with diabetes.
             </p>
           </a>
           <!-- Diabetes Visualization Link -->
@@ -216,7 +191,7 @@
           >
             <h3 class="text-xl font-semibold text-blue-600">Diabetes Impact</h3>
             <p class="text-gray-600 mt-2">
-              Analyze death rate caused by obesity and its category
+                Analyze the impact of dietary risk across the states.
             </p>
           </a>
         </div>
@@ -239,5 +214,29 @@
       document.getElementById("mini-chart-diabetes").textContent =
         "Diabetes Chart Preview";
     </script>
+
+<script>
+
+    
+    // Toggle the sidebar visibility on small screens
+    const burgerButton = document.getElementById('burger');
+    const sidebar = document.getElementById('sidebar');
+    const closeSidebarButton = document.getElementById('close-sidebar');
+    const navItemsSidebar = document.getElementById('nav-items-sidebar');
+
+    burgerButton.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+      closeSidebarButton.classList.toggle('hidden');
+      navItemsSidebar.classList.toggle('hidden'); // Toggle sidebar nav items
+    });
+
+    closeSidebarButton.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      closeSidebarButton.classList.add('hidden');
+      navItemsSidebar.classList.add('hidden'); // Hide sidebar nav items
+    });
+
+    
+  </script>
   </body>
 </html>

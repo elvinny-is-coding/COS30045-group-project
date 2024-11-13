@@ -48,22 +48,25 @@
       >
     </div>
   </nav>
-   <!-- Sidebar -->
-   <div id="sidebar" class="fixed inset-0 z-30 bg-blue-600 text-white w-64 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
-    <button id="close-sidebar" class="text-white absolute top-4 right-4 focus:outline-none hidden">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-      </svg>
-    </button>
-    <div id="nav-items-sidebar" class="space-y-4 hidden">
-      <!-- Navigation items will be dynamically loaded here -->
-      <a href="../index.html" class="text-white hover:text-gray-300">Home</a>
-      <a href="./oecd-obesity-rates-mex-usa-gbr-2018.html" class="text-white hover:text-gray-300">OECD USA GBR MEX Obesity</a>
-      <a href="./population.html" class="text-white hover:text-gray-300">Population and Obesity</a>
-      <a href="./obesity-deathrates.html" class="text-white hover:text-gray-300">Obesity Death Rates</a>
-      <a href="./willbeidentified.html" class="text-white hover:text-gray-300">Diabetes XXXX</a>
-     </div>
+<!-- Sidebar -->
+<div id="sidebar" class="fixed inset-0 z-30 bg-blue-600 text-white w-64 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
+  <!-- Close Button -->
+  <button id="close-sidebar" class="text-white absolute top-4 right-4 focus:outline-none hidden">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+    </svg>
+  </button>
+  
+  <!-- Navigation Items -->
+  <div id="nav-items-sidebar" class="space-y-4 flex flex-col items-start p-4 hidden">
+    <a href="../index.html" class="text-white hover:text-gray-300 py-2 px-4 w-full text-left">Home</a>
+    <a href="./oecd-obesity-rates-mex-usa-gbr-2018.html" class="text-white hover:text-gray-300 py-2 px-4 w-full text-left">OECD USA GBR MEX Obesity</a>
+    <a href="population.html" class="text-white hover:text-gray-300 py-2 px-4 w-full text-left">Population Map</a>
+    <a href="obesity-deathrates.html" class="text-white hover:text-gray-300 py-2 px-4 w-full text-left">Obesity Death Rates</a>
+    <a href="diabetes-sankey.html" class="text-white hover:text-gray-300 py-2 px-4 w-full text-left">Diabetes Risk</a>
+    <a href="diabetes-risk.html" class="text-white hover:text-gray-300 py-2 px-4 w-full text-left">Diabetes Impact</a>
   </div>
+</div>
   
 
   <!-- Content Wrapper -->
@@ -78,18 +81,15 @@
 
   <!-- Title and Button Section -->
   <div id="visualization-buttons" class="mb-4 flex space-x-4">
-    <button id="oecd-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
-      OECD USA GBR MEX Obesity
+    <button id="diabetes-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+        Diabetes Map
     </button>
-    <button id="population-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
-        Population Map
+    <button id="risk-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+        Diabetes Risk
     </button>
-    <button id="obesity-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
-        Obesity Map
-    </button>
-    <button id="obesity-dr-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
-        Obesity Death Rate
-    </button>
+    <button id="impact-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+        Diabetes Impact
+  </button>
 </div>
 <div id="visualization-title" class="mb-2 text-xl font-semibold text-gray-700">
       <!-- Title will be set dynamically -->
@@ -98,21 +98,14 @@
   
 
   <script>
-    // Event listeners for buttons
-    document.getElementById("oecd-btn").addEventListener("click", () => {
-        window.location.href = "./oecd-obesity-rates-mex-usa-gbr-2018.html";
+    document.getElementById("diabetes-btn").addEventListener("click", () => {
+        window.location.href = "./diabetes.html";
     });
-    // Event listeners for buttons
-    document.getElementById("population-btn").addEventListener("click", () => {
-        window.location.href = "./population.html";
+    document.getElementById("risk-btn").addEventListener("click", () => {
+      window.location.href = "./diabetes-sankey.html";
     });
-
-    document.getElementById("obesity-btn").addEventListener("click", () => {
-        window.location.href = "./obesity.html";
-    });
-
-    document.getElementById("obesity-dr-btn").addEventListener("click", () => {
-      window.location.href = "./obesity-deathrates.html";
+    document.getElementById("impact-btn").addEventListener("click", () => {
+      window.location.href = "./diabetes-risk.html";
     });
 </script>
   
@@ -182,24 +175,42 @@
   
 <!-- Visualization Info -->
 <div id="visualization-info" class="mt-4 p-4 bg-gray-100 rounded-lg shadow-md text-gray-700 text-xl">
-  <h2><strong>How Diabetes Type II Develops: Risk Factors and YLDs (Years Lost to Disability)</strong></h2>
-  <p>This Sankey diagram visualizes the progression of diabetes Type II risk factors and their contribution to Years Lost to Disability (YLDs). It illustrates the journey of an individual from exposure to specific risk factors—such as poor dietary habits, age, and gender—toward the development of diabetes and its long-term consequences.</p>
-  <p>The flow from one risk factor to the next shows how an individual’s lifestyle choices and demographics (such as age and gender) interact to increase the risk of diabetes. For example, high consumption of processed meats and low vegetable intake can lead to higher risk as one moves through different age groups, ultimately resulting in increased YLDs due to diabetes-related complications over time.</p>
+  <h2 class="font-bold text-2xl mb-4"><strong>How Diabetes Type II Develops: Risk Factors and YLDs (Years Lost to Disability)</strong></h2>
+  <p class="mb-4">This Sankey diagram visualizes the progression of diabetes Type II risk factors and their contribution to Years Lost to Disability (YLDs). It illustrates the journey of an individual from exposure to specific risk factors—such as poor dietary habits, age, and gender—toward the development of diabetes and its long-term consequences.</p>
+  <p class="mb-4">The flow from one risk factor to the next shows how an individual’s lifestyle choices and demographics (such as age and gender) interact to increase the risk of diabetes. For example, high consumption of processed meats and low vegetable intake can lead to higher risk as one moves through different age groups, ultimately resulting in increased YLDs due to diabetes-related complications over time.</p>
+  <br>
+
+  <!-- How to Interpret the Diagram -->
+  <p class="font-semibold mb-2">How to Interpret the Sankey Diagram:</p>
+  <ul class="list-disc pl-6 space-y-2">
+    <li><strong>Nodes:</strong> Each node represents a category (such as Dietary Risk, Age Group, Gender, or Time). The <em>height</em> of the node represents the total population or risk for that category. A taller node indicates a larger portion of people are affected by that factor (e.g., more people in an older age group are at higher risk for diabetes). This value comes from the sum of the flow values entering or exiting the node.</li>
+    <li><strong>Flows:</strong> The flows between nodes represent the movement of individuals from one category to another. The <em>width</em> of the flow indicates the volume of people transitioning from one stage to the next. Wider flows suggest a stronger relationship between factors. For example, a wide flow between high dietary risk and older age groups suggests that poor dietary habits contribute significantly to diabetes risk in older populations.</li>
+    <li><strong>Years Lost to Disability (YLDs):</strong> The ultimate consequence of the pathway in this diagram is YLDs, reflecting the years of life lived with disability due to diabetes. The diagram highlights how risk factors accumulate over time and contribute to this burden, helping to identify key moments where intervention could reduce the impact of diabetes.</li>
+  </ul>
   <br>
 
   <!-- Interaction Instructions -->
-  <p><strong>How to Interact with the Sankey Diagram:</strong></p>
-  <ul>
-    <li><strong>Hover over nodes:</strong> Hovering over a node reveals a tooltip displaying its name and dimensions. The <em>height</em> of a node represents the total population or total risk for that category. A taller node means a larger portion of people are affected by that factor (e.g., more people in an older age group are at higher risk for diabetes).</li>
-    <li><strong>Hover over flows:</strong> Hovering over a flow shows the source, target, and value of the transition. The <em>width</em> of the flow represents the volume of people transitioning from one category to the next, indicating how a certain risk factor influences the movement through different demographics and contributes to the overall YLD burden.</li>
+  <p class="font-semibold mb-2">How to Interact with the Sankey Diagram:</p>
+  <ul class="list-disc pl-6 space-y-2">
+    <li><strong>Hover over nodes:</strong> Hovering over a node reveals a tooltip displaying its name and dimensions. The <em>height</em> of a node represents the total population or risk for that category. A taller node indicates a higher portion of people affected by that factor (e.g., more people in an older age group are at higher risk for diabetes).</li>
+    <li><strong>Hover over flows:</strong> Hovering over a flow shows the source, target, and value of the transition. The <em>width</em> of the flow represents the volume of people transitioning from one category to the next. Thicker flows show larger shifts between categories, indicating stronger relationships between risk factors and diabetes outcomes.</li>
   </ul>
   <br>
-  <p><strong>Categories Displayed:</strong> Dietary Risk, Age Group, Gender, Time</p>
-  <p><strong>Data Source:</strong> <a href="https://ghdx.healthdata.org/record/ihme-data/global-life-expectancy-all-cause-mortality-and-cause-specific-mortality-forecasts-2022-2050m" target="_blank">Global Burden of Disease Study 2021 (GBD 2021) Mortality and Life Expectancy Forecasts 2022-2050</a></p>
-  <p><strong>Organization: </strong> IHME</p>
+
+  <p class="font-semibold">Categories Displayed:</p>
+  <ul class="list-inside list-decimal pl-6 mb-4">
+    <li>Dietary Risk</li>
+    <li>Age Group</li>
+    <li>Gender</li>
+    <li>Time</li>
+  </ul>
+
+  <p class="font-semibold mb-2">Data Source:</p>
+  <p><a href="https://ghdx.healthdata.org/record/ihme-data/global-life-expectancy-all-cause-mortality-and-cause-specific-mortality-forecasts-2022-2050m" target="_blank" class="text-blue-600 hover:underline">Global Burden of Disease Study 2021 (GBD 2021) Mortality and Life Expectancy Forecasts 2022-2050</a></p>
+  <br>
+  <p class="font-semibold">Organization:</p>
+  <p>IHME</p>
 </div>
-
-
 
 
    

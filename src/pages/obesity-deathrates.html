@@ -66,6 +66,7 @@
       id="sidebar"
       class="fixed inset-0 z-30 bg-blue-600 text-white w-64 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0"
     >
+      <!-- Close Button -->
       <button
         id="close-sidebar"
         class="text-white absolute top-4 right-4 focus:outline-none hidden"
@@ -85,19 +86,41 @@
           ></path>
         </svg>
       </button>
-      <div id="nav-items-sidebar" class="space-y-4 hidden">
-        <!-- Navigation items will be dynamically loaded here -->
-        <a href="../index.html" class="text-white hover:text-gray-300">Home</a>
-        <a href="./population.html" class="text-white hover:text-gray-300"
-          >Population and Obesity</a
+
+      <!-- Navigation Items -->
+      <div
+        id="nav-items-sidebar"
+        class="space-y-4 flex flex-col items-start p-4 hidden"
+      >
+        <a
+          href="../index.html"
+          class="text-white hover:text-gray-300 py-2 px-4 w-full text-left"
+          >Home</a
         >
         <a
-          href="./obesity-deathrates.html"
-          class="text-white hover:text-gray-300"
+          href="./oecd-obesity-rates-mex-usa-gbr-2018.html"
+          class="text-white hover:text-gray-300 py-2 px-4 w-full text-left"
+          >OECD USA GBR MEX Obesity</a
+        >
+        <a
+          href="population.html"
+          class="text-white hover:text-gray-300 py-2 px-4 w-full text-left"
+          >Population Map</a
+        >
+        <a
+          href="obesity-deathrates.html"
+          class="text-white hover:text-gray-300 py-2 px-4 w-full text-left"
           >Obesity Death Rates</a
         >
-        <a href="./willbeidentified.html" class="text-white hover:text-gray-300"
-          >Diabetes XXXX</a
+        <a
+          href="diabetes-sankey.html"
+          class="text-white hover:text-gray-300 py-2 px-4 w-full text-left"
+          >Diabetes Risk</a
+        >
+        <a
+          href="diabetes-risk.html"
+          class="text-white hover:text-gray-300 py-2 px-4 w-full text-left"
+          >Diabetes Impact</a
         >
       </div>
     </div>
