@@ -1,4 +1,12 @@
 d3.csv("../data/diabetes_risk.csv").then(function (data) {
+  // Define color scales for each layer
+  const colorSchemes = [
+    d3.scaleSequential(d3.interpolateReds).domain([0, 1]), // Top Layer: Dietary Risk
+    d3.scaleSequential(d3.interpolateOranges).domain([0, 1]), // Second Layer: Location
+    d3.scaleSequential(d3.interpolateGreens).domain([0, 1]), // Third Layer: Gender
+    d3.scaleSequential(d3.interpolateBlues).domain([0, 1]), // Fourth Layer: Age Range
+  ];
+
   // Map the data into a hierarchical format with 'rei' as the top-level category
   const rootData = d3.group(
     data,
@@ -81,8 +89,17 @@ d3.csv("../data/diabetes_risk.csv").then(function (data) {
     .selectAll("path")
     .data(root.descendants().slice(1)) // Slice to remove the root node
     .join("path")
+    // Apply color based on depth and sequential color scale
     .attr("fill", (d) => {
-      return color(d.data.key || d.depth); // Apply color based on key or depth
+      // Ensure depth does not exceed colorSchemes array bounds
+      const layerIndex = Math.min(d.depth - 1, colorSchemes.length - 1);
+
+      // Restrict shadeFactor to avoid light shades (closer to 0.4 for darker shades)
+      const shadeFactor = d.parent
+        ? 0.4 + (d.parent.children.indexOf(d) / d.parent.children.length) * 0.6
+        : 0.4;
+
+      return colorSchemes[layerIndex](shadeFactor);
     })
     .attr("fill-opacity", (d) =>
       arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0
