@@ -1,11 +1,25 @@
-// Set up SVG dimensions and color scale
+// Set up SVG dimensions and color scales
 const width = 1200,
   height = 800;
 const svg = d3.select("#visualization svg");
-const color = d3.scaleOrdinal(d3.schemeCategory10);
-
-// Tooltip
 const tooltip = d3.select("#tooltip");
+
+// Sequential color scales with adjusted range for deeper colors
+const colorSchemes = {
+  "Dietary Risk": d3
+    .scaleSequential()
+    .domain([0.4, 1])
+    .interpolator(d3.interpolateBlues),
+  "Age Group": d3
+    .scaleSequential()
+    .domain([0.4, 1])
+    .interpolator(d3.interpolateGreens),
+  Gender: d3
+    .scaleSequential()
+    .domain([0.4, 1])
+    .interpolator(d3.interpolateOranges),
+  Time: d3.scaleSequential().domain([0.4, 1]).interpolator(d3.interpolateReds),
+};
 
 // Load the data from the CSV file
 d3.csv("../data/diabetes_sankey.csv").then((data) => {
@@ -52,6 +66,47 @@ d3.csv("../data/diabetes_sankey.csv").then((data) => {
   // Apply the Sankey layout to nodes and links (automatically calculates node positions and link widths)
   const { nodes: layoutNodes, links: layoutLinks } = sankey({ nodes, links });
 
+  // Group nodes by category and assign colors
+  const groups = {
+    "Dietary Risk": [],
+    "Age Group": [],
+    Gender: [],
+    Time: [],
+  };
+
+  layoutNodes.forEach((d) => {
+    const name = d.name;
+    if (name.includes("Diet")) groups["Dietary Risk"].push(d);
+    else if (name.includes("years")) groups["Age Group"].push(d);
+    else if (name.includes("Male") || name.includes("Female"))
+      groups["Gender"].push(d);
+    else groups["Time"].push(d);
+  });
+
+  // Assign colors to each node and store it in the `color` property
+  layoutNodes.forEach((d) => {
+    if (groups["Dietary Risk"].includes(d)) {
+      d.color = colorSchemes["Dietary Risk"](
+        0.4 +
+          (groups["Dietary Risk"].indexOf(d) / groups["Dietary Risk"].length) *
+            0.6
+      );
+    } else if (groups["Age Group"].includes(d)) {
+      d.color = colorSchemes["Age Group"](
+        0.4 +
+          (groups["Age Group"].indexOf(d) / groups["Age Group"].length) * 0.6
+      );
+    } else if (groups["Gender"].includes(d)) {
+      d.color = colorSchemes["Gender"](
+        0.4 + (groups["Gender"].indexOf(d) / groups["Gender"].length) * 0.6
+      );
+    } else {
+      d.color = colorSchemes["Time"](
+        0.4 + (groups["Time"].indexOf(d) / groups["Time"].length) * 0.6
+      );
+    }
+  });
+
   // Draw links (flows)
   svg
     .append("g")
@@ -83,7 +138,7 @@ d3.csv("../data/diabetes_sankey.csv").then((data) => {
       tooltip.style("display", "none"); // Hide tooltip on mouse out
     });
 
-  // Draw nodes
+  // Draw nodes with assigned color
   const node = svg
     .append("g")
     .selectAll(".node")
@@ -97,7 +152,7 @@ d3.csv("../data/diabetes_sankey.csv").then((data) => {
     .append("rect")
     .attr("width", (d) => d.x1 - d.x0)
     .attr("height", (d) => d.y1 - d.y0)
-    .style("fill", (d, i) => color(i))
+    .style("fill", (d) => d.color) // Use the assigned color directly
     .style("stroke", "none")
     .on("mouseover", function (event, d) {
       tooltip
@@ -117,30 +172,13 @@ d3.csv("../data/diabetes_sankey.csv").then((data) => {
       tooltip.style("display", "none"); // Hide tooltip on mouse out
     });
 
-  // Create a legend (separated into sections)
+  // Create a legend (separated into sections) with matching colors
   const legend = d3.select("#visualization-legend");
 
-  const groups = {
-    "Dietary Risk": [],
-    "Age Group": [],
-    Gender: [],
-    Time: [],
-  };
-
-  layoutNodes.forEach((d) => {
-    const name = d.name;
-    if (name.includes("Diet")) groups["Dietary Risk"].push(d);
-    else if (name.includes("years")) groups["Age Group"].push(d);
-    else if (name.includes("Male") || name.includes("Female"))
-      groups["Gender"].push(d);
-    else groups["Time"].push(d);
-  });
-
-  // Add legend items for each group
   Object.keys(groups).forEach((group) => {
     const section = legend
       .append("div")
-      .attr("class", "ml-10 flex-1 max-h-[350px] overflow-auto space-y-2"); // Limit to 7 items per column
+      .attr("class", "ml-10 flex-1 max-h-[350px] overflow-auto space-y-2");
 
     section.append("h4").text(group);
 
@@ -153,7 +191,7 @@ d3.csv("../data/diabetes_sankey.csv").then((data) => {
 
     items
       .append("div")
-      .style("background-color", (d, i) => color(i))
+      .style("background-color", (d) => d.color) // Use the assigned color directly
       .style("width", "15px")
       .style("height", "15px");
 
