@@ -93,18 +93,15 @@
   <script type="module" src="../js/obesity.js"></script> <!-- Ensure you're loading the JS file -->
   <!-- Title and Button Section -->
   <div id="visualization-buttons" class="mb-4 flex space-x-4">
-    <button id="oecd-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
-      OECD USA GBR MEX Obesity
-    </button>
     <button id="population-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
-        Population Map
-    </button>
-    <button id="obesity-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
-        Obesity Map
-    </button>
-    <button id="obesity-dr-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
-        Obesity Death Rate
-    </button>
+      Population Map
+  </button>
+  <button id="obesity-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+      Obesity Map
+  </button>
+  <button id="diabetes-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+    Diabetes Map
+  </button>
 </div>
 <div id="visualization-title" class="mb-2 text-lg font-semibold text-gray-700">
       <!-- Title will be set dynamically -->
@@ -126,8 +123,8 @@
         window.location.href = "./obesity.html";
     });
 
-    document.getElementById("obesity-dr-btn").addEventListener("click", () => {
-      window.location.href = "./obesity-deathrates.html";
+    document.getElementById("diabetes-dr-btn").addEventListener("click", () => {
+      window.location.href = "./diabetes.html";
     });
 </script>
   
