@@ -1,4 +1,4 @@
-﻿Country,OBS_VALUE (Country-Level) Average
-USA,31.29423077
-MEX,37.359375
-GBR,26.98888889
+﻿Country,OBS_VALUE (Country-Level) Average,Population
+USA,31.29423077,326.8
+MEX,37.359375,124
+GBR,26.98888889,66.46

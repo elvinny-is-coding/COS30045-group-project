@@ -135,49 +135,36 @@ function sortDataByYear(sortBy) {
       .style("border", "2px solid #fff")
       .style("box-shadow", "0 4px 6px rgba(0, 0, 0, 0.1)");
   
-    // Store the bars and add color on hover
-    const bars = svg
-      .append("g")
-      .selectAll(".bar")
-      .data(data)
-      .enter()
-      .append("g")
-      .attr("transform", (d) => "translate(" + x(d.Year) + ",0)")
-      .selectAll(".bar")
-      .data((d) =>
-        categories.map((category) => ({ category, value: d[category] }))
-      )
-      .enter()
-      .append("rect")
-      .attr("class", "bar")
-      .attr("x", (d, i) => i * (x.bandwidth() / categories.length))
-      .attr("width", x.bandwidth() / categories.length - 1)
-      .attr("y", height - 80) // Start from the bottom (invisible initially)
-      .attr("height", 0) // Height of 0 (invisible initially)
-      .style("fill", (d, i) => d3.schemeCategory10[i])
-      .on("mouseover", function (event, d) {
-        // Store the original color in a custom attribute
-        const originalColor = d3.select(this).style("fill");
-  
-        tooltip.transition().duration(200).style("opacity", 0.9);
-        tooltip
-          .html(`${d.category}: ${d.value}`)
-          .style("left", event.pageX + 10 + "px")
-          .style("top", event.pageY - 28 + "px");
-  
-        // Change the bar color on hover
-        d3.select(this).style("fill", "orange"); // Change to any color you prefer
-  
-        // Store the original color as an attribute for later use
-        d3.select(this).attr("data-original-color", originalColor);
-      })
-      .on("mouseout", function (event, d) {
-        tooltip.transition().duration(500).style("opacity", 0);
-  
-        // Reset the color when mouse leaves the bar
-        const originalColor = d3.select(this).attr("data-original-color");
-        d3.select(this).style("fill", originalColor); // Use the stored original color
-      });
+     // Store the bars and add color on hover
+  const bars = svg
+  .append("g")
+  .selectAll(".bar")
+  .data(data)
+  .enter()
+  .append("g")
+  .attr("transform", (d) => "translate(" + x(d.Year) + ",0)")
+  .selectAll(".bar")
+  .data((d) =>
+    categories.map((category) => ({ category, value: d[category] }))
+  )
+  .enter()
+  .append("rect")
+  .attr("class", "bar")
+  .attr("x", (d, i) => i * (x.bandwidth() / categories.length))
+  .attr("width", x.bandwidth() / categories.length - 1)
+  .attr("y", height - 80) // Start from the bottom (invisible initially)
+  .attr("height", 0) // Height of 0 (invisible initially)
+  .style("fill", (d, i) => d3.schemeCategory10[i])
+  .on("mouseover", function (event, d) {
+    tooltip.transition().duration(200).style("opacity", 0.9);
+    tooltip
+      .html(`${d.category}: ${d.value}`)
+      .style("left", event.pageX + 10 + "px")
+      .style("top", event.pageY - 28 + "px");
+  })
+  .on("mouseout", function () {
+    tooltip.transition().duration(500).style("opacity", 0);
+  });
   
     // Animate bars
     bars

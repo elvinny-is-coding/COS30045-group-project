@@ -156,35 +156,49 @@
 </div>
 
 <br>
-
+<script type="module" src="../js/heartbeat-obesity-population.js"></script> <!-- Ensure you're loading the JS file -->
 <div id="chart" class="w-full h-screen bg-gray-100 border rounded items-center justify-center">
-  <script src="../js/heartbeat-obesity-population.js" defer></script><div id="chart-visualize"></div>
+  <div id="chart-visualize"></div>
+  <div id="info-display" style="display: none;"></div>
+
+</div>
+<div id="chart-legend" class="w-full h-auto bg-gray-100 border rounded items-center justify-center"></div>
   
-
-<div id="chart-legend" class="flex flex-wrap mt-4 justify-center"></div>
-
 <style>
-  #tooltip1 {
-    position: absolute;
-    display: none; /* Initially hidden */
-    background: white;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 4px;
-    pointer-events: none; /* Prevents interference with mouse events */
-    z-index: 1000; /* Ensure tooltip is on top */
-
-  }
-  .legend-item {
-  display: flex;
-  align-items: center;
-  margin: 5px;
-  cursor: pointer;
+#chart-legend {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    justify-content: flex-start; /* Align items to the start */
+    padding: 10px; /* Optional: Add some padding around the legend */
 }
+
+.legend-item {
+    display: flex; /* Ensure items are displayed in a row */
+    align-items: center; /* Center items vertically */
+    flex-basis: calc(10% - 8px); /* Adjust this to control number of items per row */
+    margin-right: 8px; /* Space between items */
+    margin-bottom: 5px; /* Space between rows, reduce this value */
+
+    position: relative; /* Ensure it can be layered */
+    z-index: 10; /* Higher value to bring it to the front */
+}
+
 .legend-color {
-  width: 18px;
-  height: 18px;
-  margin-right: 8px;
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+}
+
+#info-display {
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    position: absolute; /* Position it as needed */
+    top: 20px; /* Adjust position */
+    left: 20px; /* Adjust position */
+    z-index: 10; /* Ensure it's above other elements */
+    display: none; /* Initially hidden */
 }
 </style>
 <!-- Visualization Info -->

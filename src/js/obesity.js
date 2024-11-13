@@ -81,8 +81,6 @@ function addYearSelection() {
   updateVisualizationForYear(2023);
 }
 
-
-
 function updateVisualizationForYear(year) {
   selectedYear = year; // Update the global selected year
 
@@ -120,12 +118,11 @@ function updateVisualizationTitle(year) {
 function createPopulationLookup(populationData) {
   const lookup = {};
   populationData.forEach((row) => {
-    const stateName = row["Geographic Area"]; // Ensure this matches the column name in your CSV
-    const totalPopulation = +row["Total Resident Population"]; // Make sure this matches the column in your CSV
+    const stateName = row["Geographic Area"];
+    const totalPopulation = +row["Total Resident Population"];
 
-    // Store the total population in the lookup
     if (stateName && !isNaN(totalPopulation)) {
-      lookup[stateName] = totalPopulation; // Map state name to population
+      lookup[stateName] = totalPopulation;
     } else {
       console.warn(`Invalid entry for population data: ${JSON.stringify(row)}`);
     }
@@ -141,20 +138,17 @@ function calculateObesityRate(obesityData, populationLookup) {
     const state = row["States"] ? row["States"].trim() : null;
     if (!state) return;
 
-    // Assuming obesity rates are in different columns for different years
     Object.keys(row).forEach((year) => {
       if (!isNaN(year) && year >= 2011 && year <= 2023) {
-        // Ensure we only process valid years
-        const obesityRate = +row[year]; // Get the rate for that year
+        const obesityRate = +row[year];
         const population = populationLookup[state];
 
-        // Calculate obesity percentage if both values are available
         if (population && !isNaN(obesityRate)) {
-          const obesityPopulation = (population * obesityRate) / 100; // Calculate obesity population
+          const obesityPopulation = (population * obesityRate) / 100;
           obesityLookup[state] = obesityLookup[state] || {};
           obesityLookup[state][year] = {
-            rate: obesityRate.toFixed(2), // Format to two decimal places
-            population: Math.round(obesityPopulation), // Round to nearest whole number
+            rate: obesityRate.toFixed(2),
+            population: Math.round(obesityPopulation),
           };
         }
       }
@@ -172,13 +166,11 @@ function drawMap(geoData, populationLookup, obesityLookup) {
     return;
   }
 
-  // Clear any previous content
   clearMap();
 
   const width = visualizationContainer.clientWidth;
   const height = visualizationContainer.clientHeight;
 
-  // Create SVG
   svg = d3
     .select("#visualization")
     .append("svg")
@@ -192,10 +184,8 @@ function drawMap(geoData, populationLookup, obesityLookup) {
 
   path = d3.geoPath().projection(projection);
 
-  // Initialize tooltip
   initTooltip();
 
-  // Draw the map with population and obesity data
   drawPopulationMap(geoData, populationLookup, obesityLookup);
 }
 
@@ -220,13 +210,12 @@ function drawPopulationMap(geoData, populationLookup, obesityLookup) {
     return;
   }
 
-  // Create a color scale for the gradient
   const colorScale = d3
     .scaleSequential()
-    .domain([0, 40]) // Assuming obesity rates range from 0 to 40%
+    .domain([0, 40])
     .interpolator(d3.interpolateReds);
 
-    svg
+  svg
     .selectAll("path")
     .data(geoData.features)
     .enter()
@@ -248,16 +237,14 @@ function drawPopulationMap(geoData, populationLookup, obesityLookup) {
 
   console.log("Population map with obesity data drawn.");
 
-  // Draw the legend
   drawLegend(colorScale);
 }
 
 // Handle mouse over event
 function handleMouseOver(event, d, populationLookup, obesityLookup) {
-  const stateName = d.properties.NAME; // Extract the state name from the geo data
-  const population = populationLookup[stateName] || "Unknown Population"; // Fetch total resident population
+  const stateName = d.properties.NAME;
+  const population = populationLookup[stateName] || "Unknown Population";
 
-  // Access obesity data for the selected year dynamically
   const obesityData = obesityLookup[stateName] || {};
   const obesityRate = obesityData[selectedYear]
     ? obesityData[selectedYear].rate
@@ -268,7 +255,7 @@ function handleMouseOver(event, d, populationLookup, obesityLookup) {
 
   tooltip
     .style("display", "inline-block")
-    .style("left", event.pageX + 10 + "px")
+ .style("left", event.pageX + 10 + "px")
     .style("top", event.pageY + 10 + "px")
     .html(
       `<strong>${stateName}</strong><br>Population: ${population}<br>Obesity Rate: ${obesityRate}%<br>Obesity Population: ${obesityPopulation}`
@@ -302,7 +289,6 @@ function drawLegend(colorScale) {
   const legendWidth = 300;
   const legendHeight = 20;
 
-  // Create a gradient legend using SVG
   const legendSvg = svg
     .append("g")
     .attr("class", "legend")
@@ -311,7 +297,6 @@ function drawLegend(colorScale) {
       `translate(${(svg.attr("width") - legendWidth) / 2}, 20)`
     );
 
-  // Create the gradient definition
   const gradient = legendSvg
     .append("defs")
     .append("linearGradient")
@@ -321,7 +306,6 @@ function drawLegend(colorScale) {
     .attr("y1", "0%")
     .attr("y2", "0%");
 
-  // Define the gradient color stops
   gradient
     .append("stop")
     .attr("offset", "0%")
@@ -331,14 +315,12 @@ function drawLegend(colorScale) {
     .attr("offset", "100%")
     .attr("stop-color", colorScale(40));
 
-  // Create the legend rectangle and fill it with the gradient
   legendSvg
     .append("rect")
     .attr("width", legendWidth)
     .attr("height", legendHeight)
     .style("fill", "url(#legendGradient)");
 
-  // Add legend axis (scale) for context
   const legendScale = d3.scaleLinear().domain([0, 40]).range([0, legendWidth]);
 
   const legendAxis = d3.axisBottom(legendScale).ticks(5);
@@ -368,19 +350,15 @@ function displayCSVData(data) {
     return;
   }
 
-  // Calculate total pages
   const totalPages = Math.ceil(data.length / rowsPerPage);
 
-  // Function to render table rows for the current page
   function renderPage(page) {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
     const paginatedData = data.slice(start, end);
 
-    // Clear existing rows
     table.select("tbody").selectAll("tr").remove();
 
-    // Append data rows
     const rows = table
       .select("tbody")
       .selectAll("tr")
@@ -396,24 +374,20 @@ function displayCSVData(data) {
         d.Population,
         d["Obesity Rate (%)"],
         d["Obesity Population"],
-      ]) // Extract relevant data
+      ])
       .enter()
       .append("td")
       .attr("class", "border border-gray-300 py-3 px-4 text-sm")
       .text((d) => d);
 
-    // Update pagination info
     d3.select("#page-info").text(`Slide ${currentPage} of ${totalPages}`);
 
-    // Update button states
     d3.select("#prev-button").property("disabled", currentPage === 1);
     d3.select("#next-button").property("disabled", currentPage === totalPages);
   }
 
-  // Initial render
   renderPage(currentPage);
 
-  // Pagination controls
   d3.select("#prev-button").on("click", () => {
     if (currentPage > 1) {
       currentPage--;
@@ -459,6 +433,3 @@ function formatDataForTable(populationData, obesityLookup, year) {
 
 // Call the loadPopulationData function to initialize the visualization
 loadPopulationData();
-
-
-  
