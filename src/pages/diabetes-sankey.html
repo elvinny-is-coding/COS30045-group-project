@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Obesity,Diabetes and Nutrition Impact in US</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script src="../js/script.js" ></script>
+  <script src="../js/data-table.js" defer></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- Navbar -->
+  <nav id="navbar" class="bg-blue-600 text-white p-4 flex items-center justify-between md:justify-between md:p-4">
+    <div class="flex items-center">
+      <span class="text-lg font-bold">ODNI US</span>
+    </div>
+    <button class="text-white focus:outline-none md:hidden" id="burger">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+    </button>
+    <div class="hidden md:flex md:space-x-4" id="nav-items-navbar">
+      <a href="../index.html" class="text-white hover:text-gray-300">Home</a>
+      <a href="./oecd-obesity-rates-mex-usa-gbr-2018.html" class="text-white hover:text-gray-300">OECD USA GBR MEX Obesity</a>
+      <a href="./population.html" class="text-white hover:text-gray-300">Population and Obesity</a>
+      <a href="./obesity-deathrates.html" class="text-white hover:text-gray-300">Obesity Death Rates</a>
+      <a href="./willbeidentified.html" class="text-white hover:text-gray-300">Diabetes XXXX</a>
+    </div>
+  </nav>
+   <!-- Sidebar -->
+   <div id="sidebar" class="fixed inset-0 z-30 bg-blue-600 text-white w-64 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
+    <button id="close-sidebar" class="text-white absolute top-4 right-4 focus:outline-none hidden">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    <div id="nav-items-sidebar" class="space-y-4 hidden">
+      <!-- Navigation items will be dynamically loaded here -->
+      <a href="../index.html" class="text-white hover:text-gray-300">Home</a>
+      <a href="./oecd-obesity-rates-mex-usa-gbr-2018.html" class="text-white hover:text-gray-300">OECD USA GBR MEX Obesity</a>
+      <a href="./population.html" class="text-white hover:text-gray-300">Population and Obesity</a>
+      <a href="./obesity-deathrates.html" class="text-white hover:text-gray-300">Obesity Death Rates</a>
+      <a href="./willbeidentified.html" class="text-white hover:text-gray-300">Diabetes XXXX</a>
+     </div>
+  </div>
+  
+
+  <!-- Content Wrapper -->
+  <div class="flex flex-col md:flex-row p-4">
+    
+    
+
+    <!-- Main Content -->
+<div id="main-content" class="flex-1 bg-white p-4 rounded shadow">
+  <script type="module" src="../js/diabetes-sankey.js"></script> <!-- Ensure you're loading the JS file -->
+  <script src="https://cdn.jsdelivr.net/npm/d3-sankey"></script>
+
+  <!-- Title and Button Section -->
+  <div id="visualization-buttons" class="mb-4 flex space-x-4">
+    <button id="oecd-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+      OECD USA GBR MEX Obesity
+    </button>
+    <button id="population-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+        Population Map
+    </button>
+    <button id="obesity-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+        Obesity Map
+    </button>
+    <button id="obesity-dr-btn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+        Obesity Death Rate
+    </button>
+</div>
+<div id="visualization-title" class="mb-2 text-xl font-semibold text-gray-700">
+      <!-- Title will be set dynamically -->
+      How Diabetes Type II Develops: Risk Factors and YLDs (Years Lost to Disability)
+  </div>
+  
+
+  <script>
+    // Event listeners for buttons
+    document.getElementById("oecd-btn").addEventListener("click", () => {
+        window.location.href = "./oecd-obesity-rates-mex-usa-gbr-2018.html";
+    });
+    // Event listeners for buttons
+    document.getElementById("population-btn").addEventListener("click", () => {
+        window.location.href = "./population.html";
+    });
+
+    document.getElementById("obesity-btn").addEventListener("click", () => {
+        window.location.href = "./obesity.html";
+    });
+
+    document.getElementById("obesity-dr-btn").addEventListener("click", () => {
+      window.location.href = "./obesity-deathrates.html";
+    });
+</script>
+  
+
+<div class="flex">
+    <!-- Placeholder for dynamically loaded visualization -->
+    <div id="visualization" class="rounded flex items-center justify-center my-10">
+      <svg width="1200" height="800"></svg>
+    </div>
+    <!-- Section for Legend -->
+    <div id="visualization-legend" class="ml-5 mt-10 flex flex-row flex-grow"></div>
+</div>
+
+  <!-- Tooltip for hover information -->
+  <div id="tooltip" class="absolute bg-white text-black px-2 py-1 rounded shadow-lg" style="display:none; position: absolute;"></div>
+
+  
+  <style>
+    .node rect {
+      fill-opacity: 0.9;
+      shape-rendering: crispEdges;
+    }
+    .link {
+      fill: none;
+      stroke-opacity: 0.2;
+    }
+    .legend {
+      font-size: 12px;
+      font-family: sans-serif;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .legend-item div {
+      width: 15px;
+      height: 15px;
+      margin-right: 8px;
+    }
+    .tooltip {
+      position: absolute;
+      text-align: left;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      border-radius: 4px;
+      pointer-events: none;
+      visibility: hidden;
+    }
+    /* Add styles to the visualizer and legend containers */
+    #visualization {
+      margin-bottom: 50px; /* Space between the chart and the legend */
+    }
+    #visualization-legend {
+      display: flex;
+      flex-direction: row;
+    }
+    .legend-section {
+      margin-bottom: 20px;
+      width: 25%;
+    }
+    .legend-section h4 {
+      margin-bottom: 10px;
+    }
+  </style>
+  
+<!-- Visualization Info -->
+<div id="visualization-info" class="mt-4 p-4 bg-gray-100 rounded-lg shadow-md text-gray-700 text-xl">
+  <h2><strong>How Diabetes Type II Develops: Risk Factors and YLDs (Years Lost to Disability)</strong></h2>
+  <p>This Sankey diagram visualizes the progression of diabetes Type II risk factors and their contribution to Years Lost to Disability (YLDs). It illustrates the journey of an individual from exposure to specific risk factors—such as poor dietary habits, age, and gender—toward the development of diabetes and its long-term consequences.</p>
+  <p>The flow from one risk factor to the next shows how an individual’s lifestyle choices and demographics (such as age and gender) interact to increase the risk of diabetes. For example, high consumption of processed meats and low vegetable intake can lead to higher risk as one moves through different age groups, ultimately resulting in increased YLDs due to diabetes-related complications over time.</p>
+  <br>
+
+  <!-- Interaction Instructions -->
+  <p><strong>How to Interact with the Sankey Diagram:</strong></p>
+  <ul>
+    <li><strong>Hover over nodes:</strong> Hovering over a node reveals a tooltip displaying its name and dimensions. The <em>height</em> of a node represents the total population or total risk for that category. A taller node means a larger portion of people are affected by that factor (e.g., more people in an older age group are at higher risk for diabetes).</li>
+    <li><strong>Hover over flows:</strong> Hovering over a flow shows the source, target, and value of the transition. The <em>width</em> of the flow represents the volume of people transitioning from one category to the next, indicating how a certain risk factor influences the movement through different demographics and contributes to the overall YLD burden.</li>
+  </ul>
+  <br>
+  <p><strong>Categories Displayed:</strong> Dietary Risk, Age Group, Gender, Time</p>
+  <p><strong>Data Source:</strong> <a href="https://ghdx.healthdata.org/record/ihme-data/global-life-expectancy-all-cause-mortality-and-cause-specific-mortality-forecasts-2022-2050m" target="_blank">Global Burden of Disease Study 2021 (GBD 2021) Mortality and Life Expectancy Forecasts 2022-2050</a></p>
+  <p><strong>Organization: </strong> IHME</p>
+</div>
+
+
+
+
+   
+</div>
+
+  <script>
+
+    
+    // Toggle the sidebar visibility on small screens
+    const burgerButton = document.getElementById('burger');
+    const sidebar = document.getElementById('sidebar');
+    const closeSidebarButton = document.getElementById('close-sidebar');
+    const navItemsSidebar = document.getElementById('nav-items-sidebar');
+
+    burgerButton.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+      closeSidebarButton.classList.toggle('hidden');
+      navItemsSidebar.classList.toggle('hidden'); // Toggle sidebar nav items
+    });
+
+    closeSidebarButton.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      closeSidebarButton.classList.add('hidden');
+      navItemsSidebar.classList.add('hidden'); // Hide sidebar nav items
+    });
+
+    
+  </script>
+
+  <script>
+    
+  </script>
+
+</body>
+</html>
+
