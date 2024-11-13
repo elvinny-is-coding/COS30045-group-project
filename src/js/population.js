@@ -46,7 +46,6 @@ function applyTransitionEffect(effect) {
     displayStatesSequentially(sortedFeatures);
 }
 
-// Function to draw the map container
 function drawMap(geoData, populationLookup) {
     const visualizationContainer = document.getElementById("visualization");
     if (!visualizationContainer) return;
@@ -56,9 +55,10 @@ function drawMap(geoData, populationLookup) {
     const width = visualizationContainer.clientWidth;
     const height = visualizationContainer.clientHeight;
 
+    // Create the SVG for the map
     svg = d3.select("#visualization").append("svg")
         .attr("width", width)
-        .attr("height", height);
+        .attr("height", height - 60);  // Leave space for the legend below the map
 
     const projection = d3.geoAlbersUsa()
         .scale(1000)
@@ -74,7 +74,97 @@ function drawMap(geoData, populationLookup) {
         .style("border", "1px solid gray")
         .style("border-radius", "5px")
         .style("display", "none");
+
+    const colorScale = d3.scaleSequential(d3.interpolateBlues)
+        .domain([0, d3.max(Object.values(populationLookup))]);
+
+    // Draw the legend after drawing the map
+    drawLegend(colorScale, height);
 }
+
+function drawLegend(colorScale, mapHeight) {
+    // Get the width and height of the visualization container dynamically
+    const visualizationContainer = document.getElementById("visualization");
+    const containerWidth = visualizationContainer.clientWidth;
+    const containerHeight = visualizationContainer.clientHeight;
+
+    // Adjust the legend dimensions relative to the container size
+    const legendWidth = containerWidth * 0.8;  // Set width to 80% of container width
+    const legendHeight = 20;  // You can still keep this fixed or adjust it if needed
+    const marginTop = 10;  // Add some space between the map and the legend
+
+    // Create a new SVG for the legend below the map
+    const legendSvg = d3.select("#legend").append("svg")
+        .attr("width", legendWidth)
+        .attr("height", legendHeight + 40)  // Adjust height for the labels
+        .attr("x", (containerWidth - legendWidth) / 2)  // Center the legend horizontally
+        .attr("y", mapHeight + marginTop);  // Position it below the map
+
+    const gradient = legendSvg
+        .append("defs")
+        .append("linearGradient")
+        .attr("id", "legendGradient")
+        .attr("x1", "0%")
+        .attr("x2", "100%")
+        .attr("y1", "0%")
+        .attr("y2", "0%");
+
+    gradient
+        .append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", colorScale.range()[0]);
+
+    gradient
+        .append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", colorScale.range()[1]);
+
+    legendSvg
+        .append("rect")
+        .attr("width", legendWidth)
+        .attr("height", legendHeight)
+        .style("fill", "url(#legendGradient)");
+
+    const legendScale = d3.scaleLinear()
+        .domain(colorScale.domain())
+        .range([0, legendWidth]);
+
+    const legendAxis = d3.axisBottom(legendScale).ticks(5);
+
+    legendSvg
+        .append("g")
+        .attr("class", "legend-axis")
+        .attr("transform", `translate(0, ${legendHeight})`)
+        .call(legendAxis);
+
+    // Format the legend values with commas if they are in millions
+    const formatValue = d3.format(".2s"); // Formats as 1.0M, 2.5M, etc.
+
+    // Add labels for the legend
+    const minValue = colorScale.domain()[0];
+    const maxValue = colorScale.domain()[1];
+
+    legendSvg
+        .append("text")
+        .attr("x", 0)
+        .attr("y", legendHeight + 25)
+        .attr("dy", ".35em")
+        .attr("text-anchor", "start")
+        .style("font-size", "12px")
+        .text(formatValue(minValue));  // Minimum value label with formatted value
+
+    legendSvg
+        .append("text")
+        .attr("x", legendWidth)
+        .attr("y", legendHeight + 25)
+        .attr("dy", ".35em")
+        .attr("text-anchor", "end")
+        .style("font-size", "12px")
+        .text(formatValue(maxValue));  // Maximum value label with formatted value
+}
+
+
+
 
 // Function to display states sequentially for transitions
 function displayStatesSequentially(features) {
@@ -128,6 +218,7 @@ function drawSingleState(feature) {
             tooltip.style("display", "none");
         });
 }
+
 
 // Display state detail in text form for state-by-state mode
 function displayStateDetail(stateName, population) {

@@ -138,9 +138,10 @@
   
   
   <!-- Placeholder for dynamically loaded visualization -->
-  <div id="visualization" class="w-full h-screen bg-gray-100 border rounded flex items-center justify-center">
-      <span class="text-gray-500" id="visualize"></span>
-  </div>
+  <div id="visualization" class="w-full h-screen bg-gray-100 border rounded flex flex-col items-center justify-center">
+    <div id="legend"></div>  <!-- Legend div placed above the map -->
+    <span class="text-gray-500" id="visualize"></span>  <!-- This will be below the legend -->
+</div>
   <div id="state-info" class="p-4 border mb-4"></div>
 
   <div id="legend"></div>
